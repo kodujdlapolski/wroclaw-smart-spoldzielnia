@@ -6,6 +6,7 @@
   <ItemGroup>
     <Compile Include="Utils.fs" />
     <Compile Include="ConnectionStringParseTests.fs" />
+    <Compile Include="BuildingsControllerTests.fs" />
     <Compile Include="Program.fs" />
   </ItemGroup>
   <ItemGroup>

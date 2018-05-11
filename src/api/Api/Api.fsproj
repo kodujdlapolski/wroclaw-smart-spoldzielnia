@@ -10,10 +10,13 @@
     <Reference Include="libraries\FSharp.Data.SqlProvider.dll" Version="1.1.42" PublicKeyToken="b77a5c561934e089"/>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Domain/Models.fs"/>
-    <Compile Include="Infrastructure/DataAccess.fs"/>
-    <Compile Include="Infrastructure/Configuration/ConnectionString.fs"/>
+    <Compile Include="Domain/Models.fs" />
+    <Compile Include="Domain/Providers.fs" />
+    <Compile Include="Infrastructure/Configuration/ConnectionString.fs" />
+    <Compile Include="Infrastructure/DataAccess.fs" />
+    <Compile Include="Application/Controllers/JsonResultBuilder.fs" />
     <Compile Include="Application/Controllers/BuildingsController.fs" />
+    <Compile Include="Infrastructure/Configuration/DependencyResolution.fs" />
     <Compile Include="Application/Startup.fs" />
     <Compile Include="Application/Program.fs" />
   </ItemGroup>

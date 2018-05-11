@@ -1,6 +1,7 @@
 module DataAccess
 open Models
 open FSharp.Data.Sql
+open ConnectionString
 
 module private Internal = 
 
@@ -13,7 +14,8 @@ module private Internal =
     type Db = 
         SqlDataProvider<Common.DatabaseProviderTypes.POSTGRESQL,ConnectionString = CompiletimeConnectionString,ResolutionPath = ResolutionPath>
 
-let getBuildings (connectionString : string) =
-    let dataContext = Internal.Db.GetDataContext connectionString
+let getBuildings connectionString () =
+    let dataContext = Internal.Db.GetDataContext (connectionString |> value)
     dataContext.Public.Buildings    
     |> Seq.map (fun b -> {Id = b.Id; Name = b.Name; Description = b.Description})
+    |> List.ofSeq

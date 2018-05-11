@@ -4,6 +4,7 @@ open Microsoft.AspNetCore.Builder
 open Microsoft.AspNetCore.Hosting
 open Microsoft.Extensions.Configuration
 open Microsoft.Extensions.DependencyInjection
+open DependencyResolution
 
 type Startup private () =
     new (configuration: IConfiguration) as this =
@@ -11,6 +12,7 @@ type Startup private () =
         this.Configuration <- configuration
 
     member this.ConfigureServices(services: IServiceCollection) =
+        registerServices services
         services.AddMvc() |> ignore
 
     member this.Configure(app: IApplicationBuilder, _: IHostingEnvironment) =

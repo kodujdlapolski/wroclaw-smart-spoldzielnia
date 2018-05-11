@@ -15,7 +15,7 @@ let runParser parser str =
 
 [<Tests>]
 let parsingPostgresStyleConnectionString = 
-  "should be able to parse all parameters" =>?
+  "should be able to parse postgres connection string" =>?
     [
       ( "should be able to parse user name" ->?
         let parsed = runParser userParser "postgres://user:"
