@@ -11,7 +11,7 @@
       "preLaunchTask": "build api",
       "program": "${workspaceRoot}/Api/bin/Debug/netcoreapp2.0/Api.dll",
       "args": [],
-      "cwd": "${workspaceRoot}",
+      "cwd": "${workspaceRoot}/Api",
       "stopAtEntry": false,
       "launchBrowser": {
         "enabled": true,

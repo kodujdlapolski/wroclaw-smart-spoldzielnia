@@ -20,7 +20,7 @@ Api mające służyć do dostarczania danych niezbędnych do funkcjonowania bota
   * **spoldzielnia = nazwa bazy** lub wartość zmiennej środowiskowej "dbName"
   * **Dev = username** lub wartość zmiennej środowiskowej "dbUserName"
   * **dev = password** lub wartość zmiennej środowiskowej "dbPassword"
-  * struktura tabel odpowiada tej z **Infrastructure/Database/createTables.sql**
+  * struktura tabel odpowiada tej z **Api/Infrastructure/Database/createTables.sql**
   * username powinien mieć granty do tych tabel
 
 2. Wykonaj w folderze /Api 
@@ -36,12 +36,14 @@ Container nie będzie widział zmiennych środowiskowych i trzeba mu je przekaza
 
 ```docker run -p 8181:80 -e DATABASE_URL=postgres://Dev:dev@host.docker.internal:5432/spoldzielnia api```
 
-Api będzie nasłuchiwać na porcie 8181 (w konsoli się wyświetli że 80, jednak to port lokalny dla kontenera)
+Api będzie nasłuchiwać na porcie 8181 (w konsoli się wyświetli że 80, jednak to port lokalny dla kontenera).
 
 4. Deploy na Heroku. Po zbudowaniu obrazu dockera należy otagować docker image (zakładam image name "api" tak jak wyżej, <app> to nazwa aplikacji w Heroku) a następnie wysłać do Heroku
 
 ```docker tag api registry.heroku.com/<app>/web```
+
 ```heroku container:login```
+
 ```docker push registry.heroku.com/spoldzielnia/web```
 
 ## Testy

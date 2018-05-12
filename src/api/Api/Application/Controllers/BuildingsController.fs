@@ -2,12 +2,12 @@
 
 open Microsoft.AspNetCore.Mvc
 open Providers
-open JsonResultBuilder
+open BuildingsWebObject
 
 [<Route("api/buildings")>]
-type BuildingsController(buildingsProvider : IBuildingsProvider, jsonBuilder : IJsonResultBuilder) =
+type BuildingsController(buildingsProvider : IBuildingsProvider, responseBuilder : IResponseBuilder) =
     inherit Controller()
 
     [<HttpGet>]
     member this.Get() =
-        buildingsProvider.Get() |> List.map jsonBuilder.BuildJsonResult
+        buildingsProvider.Get() |> List.map responseBuilder.Build
