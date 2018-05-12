@@ -14,7 +14,7 @@
     <Compile Include="Domain/Providers.fs" />
     <Compile Include="Infrastructure/Configuration/ConnectionString.fs" />
     <Compile Include="Infrastructure/DataAccess.fs" />
-    <Compile Include="Application/Controllers/JsonResultBuilder.fs" />
+    <Compile Include="Application/Controllers/BuildingsWebObject.fs" />
     <Compile Include="Application/Controllers/BuildingsController.fs" />
     <Compile Include="Infrastructure/Configuration/DependencyResolution.fs" />
     <Compile Include="Application/Startup.fs" />
