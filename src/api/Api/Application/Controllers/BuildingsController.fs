@@ -10,4 +10,4 @@ type BuildingsController(buildingsProvider : IBuildingsProvider, responseBuilder
 
     [<HttpGet>]
     member this.Get() =
-        buildingsProvider.Get() |> List.map responseBuilder.Build
+        buildingsProvider.Get() |> List.map (responseBuilder.Build this.Request)

@@ -5,15 +5,7 @@ open Api.Controllers
 open Models
 open Providers 
 open BuildingsWebObject
-open Microsoft.AspNetCore.Mvc
-open Newtonsoft.Json
-
-let deserialize<'a> x = 
-  let settings = 
-    let s = new JsonSerializerSettings()
-    s.ContractResolver <- new Serialization.CamelCasePropertyNamesContractResolver()
-    s
-  JsonConvert.DeserializeObject<'a>(x, settings)
+open System.Net.Http
 
 [<Tests>]
 let buildingsControllerTests = 
@@ -24,13 +16,11 @@ let buildingsControllerTests =
   let getMockProvider buildings = 
     {new IBuildingsProvider with member __.Get() = buildings }
 
-  let getMockWebObjectBuilder webObjectt = 
-    {new IResponseBuilder with member __.Build(x) = webObjectt }  
-
-
+  let getMockWebObjectBuilder webObject = 
+    {new IResponseBuilder with member __.Build _ _ = webObject }  
 
   "BuildingsController retrieves buildings" =>? [
-    
+
     ("Should return all found buildings" ->?
       let count = 10
       let providerDouble = dummyBuilding |> List.replicate count |> getMockProvider
@@ -44,7 +34,7 @@ let buildingsControllerTests =
       let jsonBuilderDouble = getMockWebObjectBuilder {dummyBuildingWebObject with Name = "this is building"}
       let controller = new BuildingsController(providerDouble, jsonBuilderDouble)
 
-      test <@ let [x] = controller.Get()
+      test <@ let x = controller.Get() |> List.head
               x.Name = "this is building" @>
-    )    
+    )
   ]

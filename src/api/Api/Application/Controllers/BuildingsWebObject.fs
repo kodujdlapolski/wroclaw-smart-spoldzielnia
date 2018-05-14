@@ -6,13 +6,19 @@ open Microsoft.AspNetCore.Http
 open System.Net.Http
 open Models
 
-type Link = {Href : string}
+type Link = {Href : string; Relation : string}
+
+type BaseUrlProvider = HttpRequest -> string
 
 type BuildingWebObject = 
   { Name: string; Description : string; Id: string; Links: Link list }
 
 type IResponseBuilder = 
-  abstract member Build : Building -> BuildingWebObject
+  abstract member Build : HttpRequest -> Building -> BuildingWebObject
 
-let toWebObject { Building.Name = name; Building.Description = desc; Building.Id = id } =
-  {Name = name; Description = desc; Id = id |> string; Links = []}
+let urlProvider (request : HttpRequest) = 
+  sprintf "%s://%s%s%s" request.Scheme (request.Host.ToUriComponent()) (request.PathBase.ToUriComponent()) (request.Path.ToUriComponent())
+
+let toWebObject baseUrlProvider request { Building.Name = name; Building.Description = desc; Building.Id = id }=
+  let baseUrl = baseUrlProvider request
+  {Name = name; Description = desc; Id = id |> string; Links = [{Relation = "self"; Href = sprintf "%s/%i" baseUrl id}]}
