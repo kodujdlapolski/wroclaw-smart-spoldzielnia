@@ -20,7 +20,7 @@ Api mające służyć do dostarczania danych niezbędnych do funkcjonowania bota
   * **spoldzielnia = nazwa bazy** lub wartość zmiennej środowiskowej "dbName"
   * **Dev = username** lub wartość zmiennej środowiskowej "dbUserName"
   * **dev = password** lub wartość zmiennej środowiskowej "dbPassword"
-  * struktura tabel odpowiada tej z **Api/Infrastructure/Database/createTables.sql**
+  * struktura tabel odpowiada tej z **Infrastructure/Database/createTables.sql**
   * username powinien mieć granty do tych tabel
 
 2. Wykonaj w folderze /Api 

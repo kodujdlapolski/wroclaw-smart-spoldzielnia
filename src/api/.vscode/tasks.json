@@ -33,5 +33,35 @@
       },
       "problemMatcher": "$msCompile"
     },
+    {
+      "label": "publish api",
+      "command": "dotnet publish -c Release ./Api/Api.fsproj",
+      "type": "shell",
+      "group": "build",
+      "presentation": {
+        "reveal": "always"
+      },
+      "problemMatcher": "$msCompile"
+    },
+    {
+      "label": "build docker",
+      "command": "docker build -t api .",
+      "type": "shell",
+      "group": "build",
+      "presentation": {
+        "reveal": "always"
+      },
+      "problemMatcher": "$msCompile"
+    },
+    {
+      "label": "run docker image",
+      "command": "docker run -p 8181:80 -e DATABASE_URL=postgres://Dev:dev@host.docker.internal:5432/spoldzielnia api",
+      "type": "shell",
+      "group": "build",
+      "presentation": {
+        "reveal": "always"
+      },
+      "problemMatcher": "$msCompile"
+    },
   ]
 }
