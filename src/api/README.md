@@ -27,9 +27,12 @@ Api mające służyć do dostarczania danych niezbędnych do funkcjonowania bota
 
 ```dotnet run```
 
-3. Opcjonalnie: także w folderze /Api wykonaj
+3. Opcjonalnie: folderze /Api wykonaj
 
 ```dotnet publish -c Release```
+
+Następnie w głównym folderze (tym, który zawiera Dockerfile)
+
 ```docker build -t api .```
 
 Container nie będzie widział zmiennych środowiskowych i trzeba mu je przekazać w poleceniu ```run```. Dodatkowo jeśli chcemy się połączyć z bazą zainstalowaną poza kontenerem to zmienia się adres (localhost != container localhost).
