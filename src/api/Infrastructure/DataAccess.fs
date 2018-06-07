@@ -1,5 +1,5 @@
 module DataAccess
-open Models
+open Domain
 open FSharp.Data.Sql
 open ConnectionString
 
@@ -17,5 +17,5 @@ module private Internal =
 let getBuildings connectionString () =
     let dataContext = Internal.Db.GetDataContext (connectionString |> value)
     dataContext.Public.Buildings    
-    |> Seq.map (fun b -> {Id = b.Id; Name = b.Name; Description = b.Description})
+    |> Seq.map (fun b -> { Id = b.Id; Name = b.Name; Description = b.Description })
     |> List.ofSeq

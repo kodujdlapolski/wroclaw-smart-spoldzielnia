@@ -1,7 +1,7 @@
 module DependencyResolution
 
 open Microsoft.Extensions.DependencyInjection
-open Providers
+open FrameworkACL
 open BuildingsWebObject
 open DataAccess
 open ConnectionString

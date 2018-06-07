@@ -2,9 +2,9 @@ module BuildingsControllerTests
 
 open Utils
 open Api.Controllers
-open Models
-open Providers 
+open Domain
 open BuildingsWebObject
+open FrameworkACL
 open System.Net.Http
 
 [<Tests>]

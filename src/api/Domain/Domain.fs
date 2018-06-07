@@ -1,4 +1,4 @@
-module Models
+module Domain
 
 type Building = 
  {
@@ -6,3 +6,5 @@ type Building =
    Name : string;
    Description : string;
  }
+
+ type GetBuilding = int -> Building

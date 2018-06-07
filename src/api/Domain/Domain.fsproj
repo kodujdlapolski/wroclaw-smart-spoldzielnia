@@ -5,8 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Include="Models.fs" />
-    <Compile Include="Providers.fs" />
+    <Compile Include="Domain.fs" />
   </ItemGroup>
 
 </Project>

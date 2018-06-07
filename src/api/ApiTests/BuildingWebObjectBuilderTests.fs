@@ -1,7 +1,7 @@
 module BuildingWebObjectBuilderTests
 
 open Utils
-open Models
+open Domain
 open BuildingsWebObject
 open System.Net.Http
 open BuildingsWebObject

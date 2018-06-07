@@ -9,6 +9,7 @@
     <PackageReference Include="SqlProvider" Version="1.1.42"/>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include= "Application/FrameworkACL.fs"/>
     <Compile Include="Application/Controllers/BuildingsWebObject.fs" />
     <Compile Include="Application/Controllers/BuildingsController.fs" />
     <Compile Include="Application/DependencyResolution.fs" />
