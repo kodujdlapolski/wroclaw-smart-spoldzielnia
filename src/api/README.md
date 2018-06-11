@@ -53,13 +53,13 @@ a usunąć
 
 ```docker rm <ID>```
 
-4. Deploy na Heroku. Po zbudowaniu obrazu dockera należy otagować docker image (zakładam image name "api" tak jak wyżej, <app> to nazwa aplikacji w Heroku) a następnie wysłać do Heroku
-
-```docker tag api registry.heroku.com/<app>/web```
+4. Deploy na Heroku. W katalogu z dockerfile wykonujemy (gdzie <app> to nazwa naszej aplikacji w heroku):
 
 ```heroku container:login```
 
-```docker push registry.heroku.com/spoldzielnia/web```
+```heroku container:push web -a <app>```
+
+```heroku container:release web -a <app>```
 
 ## Testy
 
