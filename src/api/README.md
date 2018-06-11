@@ -41,6 +41,18 @@ Container nie będzie widział zmiennych środowiskowych i trzeba mu je przekaza
 
 Api będzie nasłuchiwać na porcie 8181 (w konsoli się wyświetli że 80, jednak to port lokalny dla kontenera).
 
+4. Listę uruchomionych containerów można dostać komendą
+
+```docker container ls```
+
+container można zatrzymać poleceniem
+
+```docker stop <ID>```
+
+a usunąć 
+
+```docker rm <ID>```
+
 4. Deploy na Heroku. Po zbudowaniu obrazu dockera należy otagować docker image (zakładam image name "api" tak jak wyżej, <app> to nazwa aplikacji w Heroku) a następnie wysłać do Heroku
 
 ```docker tag api registry.heroku.com/<app>/web```

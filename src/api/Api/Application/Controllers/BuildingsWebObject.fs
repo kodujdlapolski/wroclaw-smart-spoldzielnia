@@ -17,7 +17,11 @@ type IResponseBuilder =
   abstract member Build : HttpRequest -> Building -> BuildingWebObject
 
 let urlProvider (request : HttpRequest) = 
-  sprintf "%s://%s%s%s" (request.Scheme) (request.Host.ToUriComponent()) (request.PathBase.ToUriComponent()) (request.Path.ToUriComponent())
+  let scheme() = 
+    match System.Environment.GetEnvironmentVariable("API_SCHEME") with 
+    | null -> "http"
+    | s -> s
+  sprintf "%s://%s%s%s" (scheme()) (request.Host.ToUriComponent()) (request.PathBase.ToUriComponent()) (request.Path.ToUriComponent())
 
 let toWebObject baseUrlProvider request { Building.Name = name; Building.Description = desc; Building.Id = id }=
   let baseUrl = baseUrlProvider request
