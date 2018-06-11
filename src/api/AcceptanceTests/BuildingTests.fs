@@ -50,23 +50,23 @@ let followLink relationToFollow resource  =
 [<Tests>]
 let building = 
   "retrieve building" =>? [
-    ( "should return error message for non existing resource" ->?
+    ( "should return error message for non existing resource" ->? fun _ ->
       let result = getApiResponse (apiUrl + "/nonExisting") 
 
       test <@ result = {StatusCode = 404; Body = "Status Code: 404; Not Found"} @> )
 
-    ( "should provide list of buildings" ->?
+    ( "should provide list of buildings" ->? fun _ ->
       let buildings = getApiResource<BuildingRepresentation array> (apiUrl + "/buildings")
       test <@ buildings.Length > 1 @> )
 
-    ( "buildings should have self links" ->?
+    ( "buildings should have self links" ->? fun _ ->
       let resources = getApiResource<Resource array>  (apiUrl + "/buildings")
       let {Resource.Links = links} = Array.head resources
 
       test <@ (links |> Array.find (fun link -> link.Relation = "self")).Href <> "" @>
     )
 
-    ( "following building's self link should lead to an existing building resource" ->? 
+    ( "following building's self link should lead to an existing building resource" ->? fun _ ->
       let response = 
         getApiResource<Resource array> (apiUrl + "/buildings")
         |> Array.head
@@ -75,7 +75,7 @@ let building =
       test <@ response.StatusCode = 200 @>
     )
 
-    ( "building resource should have name" ->?
+    ( "building resource should have name" ->? fun _ ->
       let firstBuildingLink = 
         getApiResource<Resource array> (apiUrl + "/buildings")
         |> Array.head

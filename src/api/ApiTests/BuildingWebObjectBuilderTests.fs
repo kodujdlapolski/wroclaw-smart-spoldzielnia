@@ -15,7 +15,7 @@ let toWebObjectTests =
   let act = toWebObject dummyUrlProvider dummyRequest
   "Creating Building Web Object" =>? [
     
-    ("should map Name" ->?
+    ("should map Name" ->? fun _ ->
       let building = {dummyBuilding with Name = "building Name"}
       
       let result = act building  
@@ -23,7 +23,7 @@ let toWebObjectTests =
       test <@ result.Name = building.Name @>
     )
 
-    ("should map Decription" ->?
+    ("should map Decription" ->? fun _ ->
       let building = {dummyBuilding with Description = "building Description"}
 
       let result = act building
@@ -31,7 +31,7 @@ let toWebObjectTests =
       test <@ result.Description = building.Description @>
     )
     
-    ("should map Id" ->?
+    ("should map Id" ->? fun _ ->
       let building = {dummyBuilding with Id = 777}
 
       let result = act building
@@ -41,13 +41,13 @@ let toWebObjectTests =
 
     ("should add links" =>? [
       
-      ("should add self link" ->?
+      ("should add self link" ->? fun _ ->
         let result = act dummyBuilding
 
         test <@ result.Links |> List.filter (fun l -> l.Relation = "self") |> List.length = 1 @>
       )
 
-      ("self link should have format {buildingsResourceUrl}/{id}" ->? 
+      ("self link should have format {buildingsResourceUrl}/{id}" ->? fun _ ->
         
         let baseUrlProviderDouble x = "buildingsResourceUrl"
         let act = toWebObject baseUrlProviderDouble dummyRequest

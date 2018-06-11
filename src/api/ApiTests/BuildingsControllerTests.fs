@@ -21,7 +21,7 @@ let buildingsControllerTests =
 
   "BuildingsController retrieves buildings" =>? [
 
-    ("Should return all found buildings" ->?
+    ("Should return all found buildings" ->? fun _ ->
       let count = 10
       let providerDouble = dummyBuilding |> List.replicate count |> getMockProvider
       let jsonBuilderDouble = getMockWebObjectBuilder dummyBuildingWebObject
@@ -29,7 +29,7 @@ let buildingsControllerTests =
 
       test <@ controller.Get() |> List.length = count @> )
 
-    ("Should return json representations" ->?
+    ("Should return json representations" ->? fun _ ->
       let providerDouble = [dummyBuilding] |> getMockProvider
       let jsonBuilderDouble = getMockWebObjectBuilder {dummyBuildingWebObject with Name = "this is building"}
       let controller = new BuildingsController(providerDouble, jsonBuilderDouble)

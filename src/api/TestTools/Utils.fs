@@ -1,9 +1,9 @@
 module Utils
 
-let test q =  lazy Swensen.Unquote.Assertions.test q
+let test =  Swensen.Unquote.Assertions.test
 let (=>?) name list = Expecto.Tests.testList name list
-let (->?) name (t: Lazy<unit>) = Expecto.Tests.testCase name (fun _ -> t.Value)
-let (->???) name (t: Lazy<unit>) = Expecto.Tests.ftestCase name (fun _ -> t.Value)
+let (->?) name t = Expecto.Tests.testCase name t
+let (->???) name t = Expecto.Tests.ftestCase name t
 type Tests = Expecto.TestsAttribute
 
 let strContains (content:string) (text:string) =

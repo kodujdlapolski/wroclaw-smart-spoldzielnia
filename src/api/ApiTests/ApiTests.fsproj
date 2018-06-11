@@ -4,7 +4,6 @@
     <TargetFramework>netcoreapp2.0</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Utils.fs" />
     <Compile Include="BuildingsControllerTests.fs" />
     <Compile Include="BuildingWebObjectBuilderTests.fs" />
     <Compile Include="Program.fs" />
@@ -17,5 +16,6 @@
   <ItemGroup>
     <ProjectReference Include="..\Api\Api.fsproj" />
     <ProjectReference Include="..\Domain\Domain.fsproj" />
+    <ProjectReference Include="..\TestTools\TestTools.fsproj" />
   </ItemGroup>
 </Project>
