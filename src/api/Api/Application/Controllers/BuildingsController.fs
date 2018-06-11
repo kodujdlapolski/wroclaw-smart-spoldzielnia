@@ -15,4 +15,4 @@ type BuildingsController(buildingsProvider : IBuildingsProvider, responseBuilder
     [<HttpGet>]
     [<Route("api/buildings/{id}")>]
     member this.GetSingle(id : int) = 
-        id
+        { Name = "nonExistingNAme"; Description ="nonExistingDescription"; Id = "nonExistingId"; Links = [] }

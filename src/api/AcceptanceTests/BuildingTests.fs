@@ -11,7 +11,7 @@ let apiUrl = "http://localhost:5000/api"
 
 [<CLIMutable>]
 type BuildingRepresentation = 
-  { Id : int; Name: string; Description : string }
+  { Id : string; Name: string; Description : string }
 
 [<CLIMutable>]
 type Link = 
