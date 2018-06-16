@@ -11,7 +11,9 @@ let registerServices (kernel: IServiceCollection) =
     .AddTransient<IBuildingsProvider>
       (fun _ -> 
         { new IBuildingsProvider 
-          with member __.Get() = getBuildings connectionString () 
+          with 
+            member __.Get() = getBuildings connectionString () 
+            member __.Get(id) = getSingleBuilding connectionString id
         }) |> ignore
 
   kernel

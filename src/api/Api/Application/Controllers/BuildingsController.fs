@@ -16,8 +16,5 @@ type BuildingsController
 
   [<HttpGet>]
   [<Route("api/buildings/{id}")>]
-  member __.GetSingle(id : int) = 
-    { Name = "nonExistingNAme"; 
-      Description ="nonExistingDescription"; 
-      Id = "nonExistingId"; 
-      Links = [] }
+  member this.GetSingle(id : int) = 
+    buildingsProvider.Get(id) |> responseBuilder.Build this.Request
