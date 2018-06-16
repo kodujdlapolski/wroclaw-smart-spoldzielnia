@@ -4,6 +4,7 @@ open Microsoft.Extensions.DependencyInjection
 open FrameworkACL
 open BuildingsWebObject
 open DataAccess
+open Domain
 open ConnectionString
 
 let registerServices (kernel: IServiceCollection) = 
@@ -12,8 +13,8 @@ let registerServices (kernel: IServiceCollection) =
       (fun _ -> 
         { new IBuildingsProvider 
           with 
-            member __.Get() = getBuildings connectionString () 
-            member __.Get(id) = getSingleBuilding connectionString id
+            member __.Get = getBuildings connectionString 
+            member __.GetSingle = getBuilding (getBuildingById connectionString)
         }) |> ignore
 
   kernel

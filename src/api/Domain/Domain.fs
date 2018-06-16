@@ -7,4 +7,13 @@ type Building =
    Description : string;
  }
 
- type GetBuilding = int -> Building
+ type GetBuilding = int -> Building option
+ type GetBuildingById = int -> Building seq
+ type GetAllBuilding = unit -> Building list
+
+ let getBuilding : GetBuildingById -> GetBuilding = 
+  fun repository -> 
+    fun id -> 
+      match repository id |> List.ofSeq with
+      | [] -> None
+      | x :: _ -> Some(x)

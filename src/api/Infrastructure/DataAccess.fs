@@ -25,13 +25,13 @@ let getBuildings connectionString () =
   |> Seq.map (fun b -> { Id = b.Id; Name = b.Name; Description = b.Description })
   |> List.ofSeq
 
-let getSingleBuilding connectionString id = 
+let getBuildingById connectionString id = 
   let dataContext = Internal.Db.GetDataContext (connectionString |> value)
-  let row = 
-    query {
-      for building in dataContext.Public.Buildings do
-        where (building.Id = id)
-        select building
-    } |> Seq.head 
-  { Id = row.Id; Name = row.Name; Description = row.Description }
+  query {
+    for building in dataContext.Public.Buildings do
+      where (building.Id = id)
+      select building
+  } |> Seq.map (fun row -> { Id = row.Id;
+                             Name = row.Name; 
+                             Description = row.Description })
   

@@ -17,4 +17,6 @@ type BuildingsController
   [<HttpGet>]
   [<Route("api/buildings/{id}")>]
   member this.GetSingle(id : int) = 
-    buildingsProvider.Get(id) |> responseBuilder.Build this.Request
+    match buildingsProvider.GetSingle(id) with
+    | Some(building) -> responseBuilder.Build this.Request building
+    | None -> NotFoundResult
