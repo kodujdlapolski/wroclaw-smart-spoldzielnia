@@ -1,9 +1,6 @@
 module BuildingsWebObject
 
-open Microsoft.AspNetCore.Mvc
-open Newtonsoft.Json
 open Microsoft.AspNetCore.Http
-open System.Net.Http
 open Domain
 
 type Link = {Href : string; Relation : string}

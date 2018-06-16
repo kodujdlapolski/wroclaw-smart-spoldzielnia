@@ -8,7 +8,12 @@ open BuildingsWebObject
 
 [<Tests>]
 let toWebObjectTests = 
-  let dummyBuilding = {Name = "dummyName"; Description = "dummyDescription"; Id = 1}
+  let dummyBuilding = 
+    { Name = "dummyName"; 
+      Description = "dummyDescription"; 
+      Id = 1
+    }
+
   let dummyUrlProvider str = ""
   let dummyRequest = new HttpRequestMessage(HttpMethod.Get, "")
 
@@ -44,7 +49,10 @@ let toWebObjectTests =
       ("should add self link" ->? fun _ ->
         let result = act dummyBuilding
 
-        test <@ result.Links |> List.filter (fun l -> l.Relation = "self") |> List.length = 1 @>
+        test <@ 
+             result.Links 
+            |> List.filter (fun l -> l.Relation = "self") 
+            |> List.length = 1 @>
       )
 
       ("self link should have format {buildingsResourceUrl}/{id}" ->? fun _ ->
@@ -53,7 +61,9 @@ let toWebObjectTests =
         let act = toWebObject baseUrlProviderDouble dummyRequest
         let building = {dummyBuilding with Id = 42}
         
-        let selfLink = (act building).Links |> List.find (fun l -> l.Relation = "self")
+        let selfLink = 
+          (act building).Links 
+          |> List.find (fun l -> l.Relation = "self")
 
         test <@ selfLink.Href = "buildingsResourceUrl/42" @>
       )
