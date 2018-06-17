@@ -26,10 +26,14 @@ let buildingsControllerTests =
     }
 
   let mockProvider buildings = 
+    let singleton = function
+    | [] -> None
+    | h::_ -> Some(h)
+
     { new IBuildingsProvider 
       with 
         member __.Get = fun () -> buildings
-        member __.GetSingle = (fun _ -> Some(buildings |> List.head)) }
+        member __.GetSingle = (fun _ -> buildings |> singleton) }
 
   let mockWebObjectBuilder webObject = 
     {new IResponseBuilder with member __.Build _ _ = webObject } 
@@ -93,6 +97,17 @@ let buildingsControllerTests =
 
         test <@ result.Value :?> BuildingWebObject = jsonBuilding @>
 
+      "When building is not found should return 404 response" ->? fun _ ->
+        
+        let providerDouble = mockProvider []
+        let dummyJsonBuilder = mockWebObjectBuilder buildingWebObject
+        let controller =
+          new BuildingsController(providerDouble, dummyJsonBuilder)
+        
+        let result = controller.GetSingle(0)
+
+        test <@ result :? NotFoundResult @>
+
       "Should build json representation from retrieved building" =>?
         
         let retrievedBuilding = 
@@ -108,6 +123,7 @@ let buildingsControllerTests =
         let result = 
           (controller.GetSingle(0) :?> OkObjectResult).Value 
           :?> BuildingWebObject
+
         [
           "Should map Description" ->? fun _ ->
             test <@ result.Description = retrievedBuilding.Description @>
@@ -118,11 +134,5 @@ let buildingsControllerTests =
           "Should map Id" ->? fun _ ->
             test <@ result.Name = retrievedBuilding.Name @>          
         ]
-
-      "When building is not found should return 404 response" ->?
-
-        let providerDouble = mockProvider []
-
-        test <@ 1= 2 @>
     ]
   ]
