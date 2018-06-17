@@ -12,11 +12,17 @@ type BuildingsController
   [<HttpGet>]
   [<Route("api/buildings")>]
   member this.Get() =
-    buildingsProvider.Get() |> List.map (responseBuilder.Build this.Request)
+    buildingsProvider.Get() 
+    |> List.map (responseBuilder.Build this.Request)
+    |> this.Ok
 
   [<HttpGet>]
   [<Route("api/buildings/{id}")>]
-  member this.GetSingle(id : int) = 
-    match buildingsProvider.GetSingle(id) with
-    | Some(building) -> responseBuilder.Build this.Request building
-    | None -> NotFoundResult
+  member this.GetSingle(id : int) : IActionResult = 
+    buildingsProvider.GetSingle(id) 
+    |> this.BuildResult (responseBuilder.Build this.Request)
+
+  member private this.BuildResult projection result : IActionResult = 
+    match result with 
+    | Some (r) -> this.Ok(r |> projection) :> IActionResult
+    | None -> this.NotFound() :> IActionResult  

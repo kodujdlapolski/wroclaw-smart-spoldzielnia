@@ -9,7 +9,7 @@ type Building =
 
  type GetBuilding = int -> Building option
  type GetBuildingById = int -> Building seq
- type GetAllBuilding = unit -> Building list
+ type GetAllBuildings = unit -> Building list
 
  let getBuilding : GetBuildingById -> GetBuilding = 
   fun repository -> 

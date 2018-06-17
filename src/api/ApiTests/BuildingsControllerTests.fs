@@ -5,6 +5,7 @@ open Api.Controllers
 open Domain
 open BuildingsWebObject
 open FrameworkACL
+open Microsoft.AspNetCore.Mvc
 
 [<Tests>]
 let buildingsControllerTests = 
@@ -27,8 +28,8 @@ let buildingsControllerTests =
   let mockProvider buildings = 
     { new IBuildingsProvider 
       with 
-        member __.Get() = buildings
-        member __.Get(_) = buildings |> Seq.head }
+        member __.Get = fun () -> buildings
+        member __.GetSingle = (fun _ -> Some(buildings |> List.head)) }
 
   let mockWebObjectBuilder webObject = 
     {new IResponseBuilder with member __.Build _ _ = webObject } 
@@ -54,8 +55,10 @@ let buildingsControllerTests =
         let jsonBuilderDouble = mockWebObjectBuilder buildingWebObject
         let controller = 
           new BuildingsController(providerDouble, jsonBuilderDouble)
+        let result = 
+          controller.Get().Value :?> BuildingWebObject list
 
-        test <@ controller.Get() |> List.length = count @> 
+        test <@ result |> List.length = count @> 
 
       "Should return json representations" ->? fun _ ->
         let providerDouble = [dummyBuilding] |> mockProvider
@@ -64,8 +67,10 @@ let buildingsControllerTests =
                                  with Name = "this is building" }
         let controller = 
           new BuildingsController(providerDouble, jsonBuilderDouble)
+        let result = 
+          controller.Get().Value :?> BuildingWebObject list
 
-        test <@ let x = controller.Get() |> List.head
+        test <@ let x = result |> List.head
                 x.Name = "this is building" @>
       
     ]
@@ -85,7 +90,9 @@ let buildingsControllerTests =
         let controller =
           new BuildingsController(providerDouble, jsonBuilderDouble)
 
-        test <@ controller.GetSingle(0) = jsonBuilding @>
+        let result = controller.GetSingle(0) :?> OkObjectResult
+
+        test <@ result.Value :?> BuildingWebObject = jsonBuilding @>
 
       "Should build json representation from retrieved building" =>?
         
@@ -99,23 +106,19 @@ let buildingsControllerTests =
         let providerDouble = mockProvider [retrievedBuilding]        
         let controller = 
           new BuildingsController(providerDouble, webObjectBuilderStub)
+        let result = 
+          (controller.GetSingle(0) :?> OkObjectResult).Value 
+          :?> BuildingWebObject
 
         [
           "Should map Description" ->? fun _ ->
-            let result = controller.GetSingle(7)
-
             test <@ result.Description = retrievedBuilding.Description @>
 
           "Should map Name" ->? fun _ ->
-            let result = controller.GetSingle(7)
-
             test <@ result.Name = retrievedBuilding.Name @>
 
           "Should map Id" ->? fun _ ->
-            let result = controller.GetSingle(7)
-
             test <@ result.Name = retrievedBuilding.Name @>          
         ]
-      
     ]
   ]
