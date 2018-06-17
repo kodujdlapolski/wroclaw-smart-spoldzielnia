@@ -72,7 +72,6 @@ let buildingsControllerTests =
 
         test <@ let x = result |> List.head
                 x.Name = "this is building" @>
-      
     ]
 
     "Single building" =>? 
@@ -109,7 +108,6 @@ let buildingsControllerTests =
         let result = 
           (controller.GetSingle(0) :?> OkObjectResult).Value 
           :?> BuildingWebObject
-
         [
           "Should map Description" ->? fun _ ->
             test <@ result.Description = retrievedBuilding.Description @>
@@ -120,5 +118,11 @@ let buildingsControllerTests =
           "Should map Id" ->? fun _ ->
             test <@ result.Name = retrievedBuilding.Name @>          
         ]
+
+      "When building is not found should return 404 response" ->?
+
+        let providerDouble = mockProvider []
+
+        test <@ 1= 2 @>
     ]
   ]
