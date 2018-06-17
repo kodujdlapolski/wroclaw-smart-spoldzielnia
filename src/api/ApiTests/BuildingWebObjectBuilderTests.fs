@@ -51,7 +51,7 @@ let toWebObjectTests =
             |> List.filter (fun l -> l.Relation = "self") 
             |> List.length = 1 @>
       
-      "self link should have format {buildingsResourceUrl}/{id}" ->? fun _ ->
+      "self link should have format /{id}" ->? fun _ ->
         
         let baseUrlProviderDouble _ = "buildingsResourceUrl"
         let act = toWebObject baseUrlProviderDouble dummyRequest
@@ -61,6 +61,6 @@ let toWebObjectTests =
           (act building).Links 
           |> List.find (fun l -> l.Relation = "self")
 
-        test <@ selfLink.Href = "buildingsResourceUrl/42" @>
+        test <@ selfLink.Href = "/42" @>
     ]
   ]
