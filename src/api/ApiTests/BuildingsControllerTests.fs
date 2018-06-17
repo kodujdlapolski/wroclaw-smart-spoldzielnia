@@ -32,8 +32,8 @@ let buildingsControllerTests =
 
     { new IBuildingsProvider 
       with 
-        member __.Get = fun () -> buildings
-        member __.GetSingle = (fun _ -> buildings |> singleton) }
+        member __.Get() = buildings
+        member __.GetSingle _ = buildings |> singleton }
 
   let mockWebObjectBuilder webObject = 
     {new IResponseBuilder with member __.Build _ _ = webObject } 

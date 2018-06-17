@@ -8,19 +8,19 @@ open Domain
 open ConnectionString
 
 let registerServices (kernel: IServiceCollection) = 
-  kernel
-    .AddTransient<IBuildingsProvider>
-      (fun _ -> 
-        { new IBuildingsProvider 
-          with 
-            member __.Get = getBuildings connectionString 
-            member __.GetSingle = getBuilding (getBuildingById connectionString)
-        }) |> ignore
+  let getBuilding = getBuilding (getBuildingById connectionString)
+  let getBuildings = getBuildings connectionString
 
-  kernel
-    .AddTransient<IResponseBuilder>
-      (fun _ -> 
-        { new IResponseBuilder 
-          with member __.Build r b = toWebObject urlProvider r b 
-          }) |> ignore
-  ()
+  let provider = 
+    { new IBuildingsProvider 
+      with 
+        member __.Get() = getBuildings()
+        member __.GetSingle id = getBuilding id
+    }
+  let builder = 
+    { new IResponseBuilder 
+      with member __.Build r b = toWebObject urlProvider r b 
+    }
+
+  kernel.AddTransient<IBuildingsProvider>(fun _ -> provider) |> ignore
+  kernel.AddTransient<IResponseBuilder>(fun _ -> builder) |> ignore
