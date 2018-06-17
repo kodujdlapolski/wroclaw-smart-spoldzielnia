@@ -53,7 +53,7 @@ let toWebObjectTests =
       
       "self link should have format {buildingsResourceUrl}/{id}" ->? fun _ ->
         
-        let baseUrlProviderDouble x = "buildingsResourceUrl"
+        let baseUrlProviderDouble _ = "buildingsResourceUrl"
         let act = toWebObject baseUrlProviderDouble dummyRequest
         let building = {dummyBuilding with Id = 42}
         

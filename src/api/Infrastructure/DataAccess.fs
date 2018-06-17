@@ -2,7 +2,6 @@ module DataAccess
 open Domain
 open FSharp.Data.Sql
 open ConnectionString
-open ConnectionString
 
 module private Internal = 
 
