@@ -24,7 +24,8 @@ let buildWebObject
   uriBuilder
   { Building.Name = name; Building.Description = desc; Building.Id = id } =
 
-  let selfLink = Building(BuildingId id)
+  let self = Building(BuildingId id)
+  let services = BuildingServices(BuildingId id, CollectionOfServices)
   let toWebObject name desc id links = 
     { Name = name; 
       Description = desc; 
@@ -32,8 +33,7 @@ let buildWebObject
       Links = links |> Map.ofList
     }
   let links = [
-            ("self", { Href = selfLink |> uriBuilder 
-                       Templated = false
-                     })
+            ("self", { Href = self |> uriBuilder; Templated = false });
+            ("services", {Href = services |> uriBuilder; Templated = false})                   
             ]
   toWebObject name desc (string id) links

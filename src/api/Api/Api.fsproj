@@ -10,7 +10,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Application/Affordances.fs" />
-    <Compile Include="Application/Controllers/BuildingsWebObject.fs" />
+    <Compile Include="Application/WebObjects/BuildingsWebObject.fs" />
     <!--Anything below is framework specific -->
     <Compile Include="Application/FrameworkACL.fs"/>
     <Compile Include="Application/Controllers/BuildingsController.fs" />

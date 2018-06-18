@@ -62,5 +62,14 @@ let toWebObjectTests =
         let selfLink = (act building).Links |> Map.find "self"
 
         test <@ selfLink.Href = "single building uri" @>
+
+      "should add services link" ->? fun _ ->
+        let result = act dummyBuilding
+
+        test <@
+             result.Links
+             |> Map.filter (fun k _ -> k = "services")
+             |> Map.count = 1
+            @>
     ]
   ]
