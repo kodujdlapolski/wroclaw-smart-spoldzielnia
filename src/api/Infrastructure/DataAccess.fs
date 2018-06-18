@@ -20,7 +20,7 @@ module private Internal =
 
 module Buildings = 
 
-  let getBuildings connectionString () =
+  let fetchBuildings connectionString () =
     try
       let dataContext = Internal.Db.GetDataContext (connectionString |> value)
       dataContext.Public.Buildings    
@@ -32,7 +32,7 @@ module Buildings =
       |> Some
     with _ -> None 
 
-  let getBuildingById connectionString (BuildingId id) = 
+  let fetchBuildingById connectionString (BuildingId id) = 
     try
       let dataContext = Internal.Db.GetDataContext (connectionString |> value)
       query {
@@ -49,7 +49,7 @@ module Buildings =
 module Services = 
   open Service
 
-  let getServicesForBuilding connectionString (BuildingId id) = 
+  let fetchServicesForBuilding connectionString (BuildingId id) = 
     try
       let dataContext = Internal.Db.GetDataContext (connectionString |> value)
       query {
@@ -57,9 +57,9 @@ module Services =
           where (service.Buildingid = id)
           select service      
       } 
-      |> Seq.map (fun row -> { Id = row.Id;
-                               Name = row.Name;
-                               Description = row.Description })
+      |> Seq.map (fun row -> { ServiceId = row.Id;
+                               ServiceName = row.Name;
+                               ServiceDescription = row.Description })
       |> Some                           
     with _ -> None
   

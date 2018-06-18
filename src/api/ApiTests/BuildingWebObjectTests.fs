@@ -1,4 +1,4 @@
-module BuildingWebObjectBuilderTests
+module BuildingWebObjectTests
 
 open Utils
 open Building

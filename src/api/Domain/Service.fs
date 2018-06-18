@@ -5,9 +5,9 @@ type ServiceId = ServiceId of int
 
 type ServiceDto = 
   {
-    Id : int;
-    Name : string;
-    Description : string;
+    ServiceId : int;
+    ServiceName : string;
+    ServiceDescription : string;
   }
 
 type Service = 
@@ -34,17 +34,20 @@ let getServicesForBuilding
       -> GetServicesForBuilding) = 
     let toService building (dto : ServiceDto) = 
       {
-        Id = ServiceId(dto.Id);
+        Id = ServiceId(dto.ServiceId);
         Building = building;
-        Name = dto.Name;
-        Description = dto.Description
+        Name = dto.ServiceName;
+        Description = dto.ServiceDescription
       }
     fun buildingDomainService servicesRepo buildingId -> 
       match buildingDomainService buildingId with
       | Ok(building) -> 
         match servicesRepo buildingId with
         | None -> Error Panic
-        | Some serviceDtos -> Ok (serviceDtos |> Seq.map (toService building) |> List.ofSeq)
+        | Some serviceDtos -> 
+          Ok (serviceDtos 
+              |> Seq.map (toService building) 
+              |> List.ofSeq)
       | Error NotFound -> Error BuildingNotFound
       | Error Building.Panic -> Error Panic
       | Error FoundDuplicate -> Error Consistency
