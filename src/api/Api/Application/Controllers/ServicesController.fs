@@ -4,9 +4,9 @@ open Microsoft.AspNetCore.Mvc
 open FrameworkACL
 open Building
 
-type ServicesController(
-  serviceProvider : IBuildingServiceProvider,
-  responseBuilder : IServiceResponseBuilder) =
+type ServicesController
+  (serviceProvider : IBuildingServiceProvider,
+   responseBuilder : IServiceResponseBuilder) =
   inherit Controller()
 
   [<HttpGet>]
