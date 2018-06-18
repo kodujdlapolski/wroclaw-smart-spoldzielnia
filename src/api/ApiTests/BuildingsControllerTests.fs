@@ -7,6 +7,10 @@ open BuildingsWebObject
 open FrameworkACL
 open Microsoft.AspNetCore.Mvc
 
+let getOkResponseBody<'a> (resp : IActionResult) = 
+    let okResp = resp :?> OkObjectResult
+    okResp.Value :?> 'a
+
 [<Tests>]
 let buildingsControllerTests = 
 
@@ -26,13 +30,14 @@ let buildingsControllerTests =
     }
 
   let mockProvider buildings = 
-    let singleton = function
-    | [] -> None
-    | h::_ -> Some(h)
+    let singleton (b : Building list) = 
+      match b with
+      | [] -> Error NotFound
+      | h::_ -> Ok h
 
     { new IBuildingsProvider 
       with 
-        member __.Get() = buildings
+        member __.Get() = buildings |> Seq.ofList |> Ok
         member __.GetSingle _ = buildings |> singleton }
 
   let mockWebObjectBuilder webObject = 
@@ -60,9 +65,9 @@ let buildingsControllerTests =
         let controller = 
           new BuildingsController(providerDouble, jsonBuilderDouble)
         let result = 
-          controller.Get().Value :?> BuildingWebObject list
+          controller.Get() |> getOkResponseBody<BuildingWebObject seq>
 
-        test <@ result |> List.length = count @> 
+        test <@ result |> Seq.length = count @> 
 
       "Should return json representations" ->? fun _ ->
         let providerDouble = [dummyBuilding] |> mockProvider
@@ -72,9 +77,9 @@ let buildingsControllerTests =
         let controller = 
           new BuildingsController(providerDouble, jsonBuilderDouble)
         let result = 
-          controller.Get().Value :?> BuildingWebObject list
+          controller.Get() |> getOkResponseBody<BuildingWebObject seq>
 
-        test <@ let x = result |> List.head
+        test <@ let x = result |> Seq.head
                 x.Name = "this is building" @>
     ]
 
@@ -108,6 +113,34 @@ let buildingsControllerTests =
 
         test <@ result :? NotFoundResult @>
 
+      "When two buildings are found should return 500 response" ->? fun _ ->
+        let providerDouble = 
+          {new IBuildingsProvider with
+            member __.GetSingle(_) = Error FoundDuplicate 
+            member __.Get() = failwith ""
+          }
+        let dummyJsonBuilder = mockWebObjectBuilder buildingWebObject
+        let controller =
+          new BuildingsController(providerDouble, dummyJsonBuilder)
+        
+        let result = controller.GetSingle(0) :?> StatusCodeResult
+
+        test <@ result.StatusCode = 500 @>
+
+      "When provider panics should return 500 response" ->? fun _ ->
+        let providerDouble = 
+          {new IBuildingsProvider with
+            member __.GetSingle(_) = Error Panic 
+            member __.Get() = failwith ""
+          }
+        let dummyJsonBuilder = mockWebObjectBuilder buildingWebObject
+        let controller =
+          new BuildingsController(providerDouble, dummyJsonBuilder)
+        
+        let result = controller.GetSingle(0) :?> StatusCodeResult
+
+        test <@ result.StatusCode = 500 @>
+
       "Should build json representation from retrieved building" =>?
         
         let retrievedBuilding = 
@@ -121,8 +154,7 @@ let buildingsControllerTests =
         let controller = 
           new BuildingsController(providerDouble, webObjectBuilderStub)
         let result = 
-          (controller.GetSingle(0) :?> OkObjectResult).Value 
-          :?> BuildingWebObject
+          controller.GetSingle(0) |> getOkResponseBody<BuildingWebObject>
 
         [
           "Should map Description" ->? fun _ ->
