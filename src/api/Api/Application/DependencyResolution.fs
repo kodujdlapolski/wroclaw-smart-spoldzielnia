@@ -4,7 +4,7 @@ open Microsoft.Extensions.DependencyInjection
 open FrameworkACL
 open BuildingsWebObject
 open DataAccess
-open Domain
+open Building
 open ConnectionString
 open Affordances
 

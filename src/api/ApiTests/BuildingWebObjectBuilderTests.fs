@@ -1,7 +1,7 @@
 module BuildingWebObjectBuilderTests
 
 open Utils
-open Domain
+open Building
 open BuildingsWebObject
 open Affordances
 
@@ -10,7 +10,7 @@ let toWebObjectTests =
   let dummyBuilding = 
     { Name = "dummyName"; 
       Description = "dummyDescription"; 
-      Id = 1
+      Id = BuildingId(1)
     }
 
   let dummyUriBuilder _ = ""
@@ -34,11 +34,11 @@ let toWebObjectTests =
       test <@ result.Description = building.Description @>
         
     "should map Id" ->? fun _ ->
-      let building = {dummyBuilding with Id = 777}
+      let building = {dummyBuilding with Id = BuildingId(777)}
 
       let result = act building
 
-      test <@ result.Id = string building.Id @>
+      test <@ result.Id = "777" @>
     
     "should add links" =>? 
     [
@@ -57,7 +57,7 @@ let toWebObjectTests =
         | _ -> "other"
 
         let act = buildWebObject uriBuilderStub
-        let building = {dummyBuilding with Id = 42}
+        let building = {dummyBuilding with Id = BuildingId(42)}
         
         let selfLink = (act building).Links |> Map.find "self"
 

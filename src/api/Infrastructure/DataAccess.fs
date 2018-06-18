@@ -1,5 +1,5 @@
 module DataAccess
-open Domain
+open Building
 open FSharp.Data.Sql
 open ConnectionString
 
@@ -21,16 +21,21 @@ module private Internal =
 let getBuildings connectionString () =
   let dataContext = Internal.Db.GetDataContext (connectionString |> value)
   dataContext.Public.Buildings    
-  |> Seq.map (fun b -> { Id = b.Id; Name = b.Name; Description = b.Description })
+  |> Seq.map (
+              fun b -> { 
+                Id = BuildingId(b.Id); 
+                Name = b.Name; 
+                Description = b.Description 
+                })
   |> List.ofSeq
 
-let getBuildingById connectionString id = 
+let getBuildingById connectionString (BuildingId id) = 
   let dataContext = Internal.Db.GetDataContext (connectionString |> value)
   query {
     for building in dataContext.Public.Buildings do
       where (building.Id = id)
       select building
-  } |> Seq.map (fun row -> { Id = row.Id;
+  } |> Seq.map (fun row -> { Id = BuildingId(row.Id);
                              Name = row.Name; 
                              Description = row.Description })
   

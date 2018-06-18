@@ -1,5 +1,5 @@
 module FrameworkACL
-open Domain
+open Building
 open BuildingsWebObject
 
 //Types here exist for the sole purpose to be registered in IServiceCollection
@@ -10,4 +10,4 @@ type IBuildingResponseBuilder =
 
 type IBuildingsProvider = 
   abstract member Get : unit -> Building list
-  abstract member GetSingle : int -> Building option
+  abstract member GetSingle : BuildingId -> Building option

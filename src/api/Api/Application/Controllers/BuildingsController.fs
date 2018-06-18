@@ -2,6 +2,7 @@
 
 open Microsoft.AspNetCore.Mvc
 open FrameworkACL
+open Building
 
 type BuildingsController
   (buildingsProvider : IBuildingsProvider, 
@@ -18,7 +19,7 @@ type BuildingsController
   [<HttpGet>]
   [<Route("buildings/{id}")>]
   member this.GetSingle(id : int) : IActionResult = 
-    buildingsProvider.GetSingle(id) 
+    buildingsProvider.GetSingle(BuildingId id) 
     |> this.BuildResult singleBuilder.Build
 
   member private this.BuildResult projection result : IActionResult = 

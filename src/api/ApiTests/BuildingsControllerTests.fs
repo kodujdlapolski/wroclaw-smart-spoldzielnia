@@ -2,7 +2,7 @@ module BuildingsControllerTests
 
 open Utils
 open Api.Controllers
-open Domain
+open Building
 open BuildingsWebObject
 open FrameworkACL
 open Microsoft.AspNetCore.Mvc
@@ -12,7 +12,7 @@ let buildingsControllerTests =
 
   let dummyBuilding = 
     { 
-      Id = 1; 
+      Id = BuildingId(1); 
       Name = "dummyName"; 
       Description = "dummyDescription";
     }
@@ -115,10 +115,9 @@ let buildingsControllerTests =
             with 
               Name = "retrieved building Name";
               Description = "retrieved building Description";
-              Id = 123
+              Id = BuildingId(123)
           }
         let providerDouble = mockProvider [retrievedBuilding]    
-        let x = mockWebObjectBuilder buildingWebObject    
         let controller = 
           new BuildingsController(providerDouble, webObjectBuilderStub)
         let result = 

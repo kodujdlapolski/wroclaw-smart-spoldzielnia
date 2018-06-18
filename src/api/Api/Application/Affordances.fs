@@ -1,7 +1,6 @@
 module Affordances
-
-type BuildingId = BuildingId of int
-type ServiceId = ServiceId of int
+open Building
+open Service
 
 type Services = 
   | CollectionOfServices

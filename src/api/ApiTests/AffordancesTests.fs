@@ -2,6 +2,8 @@ module AffordancesTests
 
 open Affordances
 open Utils
+open Service
+open Building
 
 [<Tests>]
 let creatingUrisToAffordances = 

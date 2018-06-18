@@ -1,7 +1,7 @@
 module BuildingsWebObject
 
 open Newtonsoft.Json
-open Domain
+open Building
 open Affordances
 open Newtonsoft.Json.Serialization
 
@@ -22,7 +22,9 @@ type BuildingWebObject =
 
 let buildWebObject 
   uriBuilder
-  { Building.Name = name; Building.Description = desc; Building.Id = id } =
+  { Building.Name = name;
+    Building.Description = desc; 
+    Building.Id = BuildingId(id) } =
 
   let self = Building(BuildingId id)
   let services = BuildingServices(BuildingId id, CollectionOfServices)
