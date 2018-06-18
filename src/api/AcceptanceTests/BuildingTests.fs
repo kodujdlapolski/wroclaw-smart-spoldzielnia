@@ -7,7 +7,7 @@ open Newtonsoft.Json
 open YoLo
 
 //this assumes that api is already running!
-let apiUrl = "http://localhost:5000/api" 
+let apiUrl = "http://localhost:5000" 
 
 [<CLIMutable>]
 type BuildingRepresentation = 
@@ -41,9 +41,9 @@ let getApiResource<'a> url =
 let getLinkOfRelation relation resource = 
   resource.Links |> Array.find (fun r -> r.Relation = relation)
 
-let followLink currentResource relationToFollow resource  = 
+let followLink relationToFollow resource  = 
         let link = getLinkOfRelation relationToFollow resource
-        getApiResponse (currentResource + link.Href)
+        getApiResponse (apiUrl + link.Href)
 
 [<Tests>]
 let building = 
@@ -78,7 +78,7 @@ let building =
         let response = 
           getApiResource<Resource array> (apiUrl + "/buildings")
           |> Array.head
-          |> followLink (apiUrl + "/buildings") "self"
+          |> followLink "self"
 
         test <@ response.StatusCode = 200 @>
 

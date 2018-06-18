@@ -6,21 +6,22 @@ open BuildingsWebObject
 
 type BuildingsController
   (buildingsProvider : IBuildingsProvider, 
-   responseBuilder : IResponseBuilder) =
+   collectionBuilder : ICollectionBuildingAffordanceBuilder,
+   singleBuilder : ISingleBuildingAffordanceBuilder) =
   inherit Controller()
 
   [<HttpGet>]
-  [<Route("api/buildings")>]
+  [<Route("buildings")>]
   member this.Get() =
     buildingsProvider.Get() 
-    |> List.map (responseBuilder.Build this.Request)
+    |> List.map (collectionBuilder.Build this.Request)
     |> this.Ok
 
   [<HttpGet>]
-  [<Route("api/buildings/{id}")>]
+  [<Route("buildings/{id}")>]
   member this.GetSingle(id : int) : IActionResult = 
     buildingsProvider.GetSingle(id) 
-    |> this.BuildResult (responseBuilder.Build this.Request)
+    |> this.BuildResult (singleBuilder.Build this.Request)
 
   member private this.BuildResult projection result : IActionResult = 
     match result with 

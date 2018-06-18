@@ -17,10 +17,16 @@ let registerServices (kernel: IServiceCollection) =
         member __.Get() = getBuildings()
         member __.GetSingle id = getBuilding id
     }
-  let builder = 
-    { new IResponseBuilder 
-      with member __.Build r b = toWebObject urlProvider r b 
+  let collectionAffordancesBuilder = 
+    { new ICollectionBuildingAffordanceBuilder 
+      with member __.Build r b = collectionBuildingAffordances urlProvider r b 
     }
 
+  let singleAffordancesBuilder = 
+    { new ISingleBuildingAffordanceBuilder 
+      with member __.Build r b = singleBuildingAffordances urlProvider r b 
+    }  
+
   kernel.AddTransient<IBuildingsProvider>(fun _ -> provider) |> ignore
-  kernel.AddTransient<IResponseBuilder>(fun _ -> builder) |> ignore
+  kernel.AddTransient<ICollectionBuildingAffordanceBuilder>(fun _ -> collectionAffordancesBuilder) |> ignore
+  kernel.AddTransient<ISingleBuildingAffordanceBuilder>(fun _ -> singleAffordancesBuilder) |> ignore

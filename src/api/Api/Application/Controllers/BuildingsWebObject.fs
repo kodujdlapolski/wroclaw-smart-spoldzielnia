@@ -1,30 +1,46 @@
 module BuildingsWebObject
 
+open Newtonsoft.Json
 open Microsoft.AspNetCore.Http
 open Domain
-
-type Link = {Href : string; Relation : string}
+open Newtonsoft.Json.Serialization
 
 type BaseUrlProvider = HttpRequest -> string
 
-type BuildingWebObject = 
-  { Name: string; Description : string; Id: string; Links: Link list }
+[<JsonObject(NamingStrategyType = typeof<SnakeCaseNamingStrategy>)>]
+type Link = {Href : string; Templated : bool;}
 
-type IResponseBuilder = 
+type Links = Map<string,Link>
+
+[<JsonObject(NamingStrategyType = typeof<SnakeCaseNamingStrategy>)>]
+type BuildingWebObject = 
+  {
+    Name : string
+    Description : string
+    Id : string 
+    [<JsonProperty("_links")>]
+    Links : Links
+  }
+
+type ISingleBuildingAffordanceBuilder = 
+  abstract member Build : HttpRequest -> Building -> BuildingWebObject
+
+type ICollectionBuildingAffordanceBuilder = 
   abstract member Build : HttpRequest -> Building -> BuildingWebObject
 
 let urlProvider (request : HttpRequest) = 
-  let scheme() = 
-    match System.Environment.GetEnvironmentVariable("API_SCHEME") with 
-    | null -> "http"
-    | s -> s
-  sprintf "%s://%s%s%s" 
-    (scheme()) 
-    (request.Host.ToUriComponent()) 
+  sprintf "%s%s" 
     (request.PathBase.ToUriComponent()) 
     (request.Path.ToUriComponent())
 
-let toWebObject 
+let toWebObject name desc id links = 
+  { Name = name; 
+    Description = desc; 
+    Id = id |> string; 
+    Links = links |> Map.ofList
+  }
+
+let collectionBuildingAffordances 
   baseUrlProvider 
   request { 
           Building.Name = name; 
@@ -32,6 +48,24 @@ let toWebObject
           Building.Id = id } 
           =
   let baseUrl = baseUrlProvider request
-  { Name = name; 
-    Description = desc; Id = id |> string; 
-    Links = [{Relation = "self"; Href = sprintf "%s/%i" baseUrl id}]}
+  let links = [
+            ("self", { Href = sprintf "%s/%i" baseUrl id; 
+                       Templated = false
+                     })
+            ]
+  toWebObject name desc (string id) links
+
+let singleBuildingAffordances 
+  baseUrlProvider 
+  request { 
+          Building.Name = name; 
+          Building.Description = desc; 
+          Building.Id = id } 
+          =
+  let baseUrl = baseUrlProvider request
+  let links = [
+            ("self", { Href = baseUrl 
+                       Templated = false
+                     })
+            ]
+  toWebObject name desc (string id) links 

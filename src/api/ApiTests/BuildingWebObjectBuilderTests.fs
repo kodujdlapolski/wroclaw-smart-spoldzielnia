@@ -16,7 +16,7 @@ let toWebObjectTests =
   let dummyUrlProvider _ = ""
   let dummyRequest = new HttpRequestMessage(HttpMethod.Get, "")
 
-  let act = toWebObject dummyUrlProvider dummyRequest
+  let act = collectionBuildingAffordances dummyUrlProvider dummyRequest
   "Creating Building Web Object" =>? [
     
     "should map Name" ->? fun _ ->
@@ -42,25 +42,24 @@ let toWebObjectTests =
     
     "should add links" =>? 
     [
-      
       "should add self link" ->? fun _ ->
         let result = act dummyBuilding
 
         test <@ 
              result.Links 
-            |> List.filter (fun l -> l.Relation = "self") 
-            |> List.length = 1 @>
+            |> Map.filter (fun k _ -> k = "self") 
+            |> Map.count = 1 @>
       
-      "self link should have format /{id}" ->? fun _ ->
+      "self link should have format /buildingsRelativeUrl/{id}" ->? fun _ ->
         
-        let baseUrlProviderDouble _ = "buildingsResourceUrl"
-        let act = toWebObject baseUrlProviderDouble dummyRequest
+        let baseUrlProviderDouble _ = "buildingsRelativeUrl"
+        let act = collectionBuildingAffordances baseUrlProviderDouble dummyRequest
         let building = {dummyBuilding with Id = 42}
         
         let selfLink = 
           (act building).Links 
-          |> List.find (fun l -> l.Relation = "self")
+          |> Map.find "self"
 
-        test <@ selfLink.Href = "/42" @>
+        test <@ selfLink.Href = "/buildingsRelativeUrl/42" @>
     ]
   ]
