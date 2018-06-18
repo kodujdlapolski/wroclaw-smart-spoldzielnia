@@ -58,6 +58,7 @@ module Services =
           select service      
       } 
       |> Seq.map (fun row -> { Id = ServiceId(row.Id);
+                               BuildingId = BuildingId(row.Buildingid)
                                Name = row.Name;
                                Description = row.Description })
       |> Some                           

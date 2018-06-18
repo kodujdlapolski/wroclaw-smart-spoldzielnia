@@ -6,6 +6,7 @@ type ServiceId = ServiceId of int
 type Service = 
   {
     Id : ServiceId;
+    BuildingId : BuildingId;
     Name : string;
     Description : string;
   }

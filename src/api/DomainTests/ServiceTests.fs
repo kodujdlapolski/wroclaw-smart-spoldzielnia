@@ -10,7 +10,10 @@ let getServicessTests =
     { Id = BuildingId(1); Name = "building"; Description = "it's a building" }
 
   let dummyService = 
-    { Id = ServiceId(1); Name = "name"; Description = "description" }  
+    { Id = ServiceId(1); 
+      BuildingId = BuildingId(2);
+      Name = "name"; 
+      Description = "description" }  
 
   let mockRepository services = 
     fun _ -> Some(services|> Seq.ofList)  

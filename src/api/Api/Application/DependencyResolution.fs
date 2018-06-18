@@ -20,10 +20,10 @@ let registerServices (kernel: IServiceCollection) =
         member __.GetSingle id = getBuilding id
     }
 
-  let singleAffordancesBuilder = 
+  let buildingResponseBuilder = 
     { new IBuildingResponseBuilder 
       with member __.Build b = buildWebObject buildUri b
     }  
 
   kernel.AddTransient<IBuildingsProvider>(fun _ -> provider) |> ignore
-  kernel.AddTransient<IBuildingResponseBuilder>(fun _ -> singleAffordancesBuilder) |> ignore
+  kernel.AddTransient<IBuildingResponseBuilder>(fun _ -> buildingResponseBuilder) |> ignore
