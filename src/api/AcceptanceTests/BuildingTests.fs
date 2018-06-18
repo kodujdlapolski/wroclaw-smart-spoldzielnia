@@ -15,11 +15,15 @@ type BuildingRepresentation =
 
 [<CLIMutable>]
 type Link = 
-  { Href : string; Relation : string }
+  { Href : string; Templated : bool }
 
 [<CLIMutable>]
+[<JsonObject>]
 type Resource = 
-  { Links : Link array }
+  { 
+  [<JsonProperty("_links")>]
+  Links : Map<string,Link>
+  }
 
 type Response = {StatusCode: int; Body : string}
 
@@ -39,7 +43,7 @@ let getApiResource<'a> url =
   JsonConvert.DeserializeObject<'a>(response.Body)
 
 let getLinkOfRelation relation resource = 
-  resource.Links |> Array.find (fun r -> r.Relation = relation)
+  resource.Links |> Map.find relation
 
 let followLink relationToFollow resource  = 
         let link = getLinkOfRelation relationToFollow resource
@@ -68,9 +72,7 @@ let building =
       let resources = getApiResource<Resource array>  (apiUrl + "/buildings")
       let {Resource.Links = links} = Array.head resources
 
-      test <@ 
-           ( links 
-             |> Array.find (fun link -> link.Relation = "self")).Href <> "" @>
+      test <@ ( links |> Map.find "self").Href <> "" @>
 
     "following building self link leads to an existing building resource" ->?
     
@@ -84,13 +86,13 @@ let building =
 
     "building resource should have name" ->? fun _ ->
     
-      let firstBuildingLink = 
+      let buildingLink = 
         getApiResource<Resource array> (apiUrl + "/buildings")
         |> Array.head
         |> getLinkOfRelation "self"
 
       let firstBuilding =
-          getApiResource<BuildingRepresentation> firstBuildingLink.Href
+          getApiResource<BuildingRepresentation> (apiUrl + buildingLink.Href)
 
       test <@ isNull firstBuilding.Name |> not @>
   ]
