@@ -12,17 +12,19 @@ type BuildingsController
   [<HttpGet>]
   [<Route("buildings")>]
   member this.Get() =
-    buildingsProvider.Get() 
-    |> List.map singleBuilder.Build
-    |> this.Ok
+    match buildingsProvider.Get() with
+    | Ok(buildings) -> buildings
+                      |> Seq.map singleBuilder.Build
+                      |> this.Ok :> IActionResult
+    | Error(_) -> this.StatusCode(500) :> IActionResult
 
   [<HttpGet>]
   [<Route("buildings/{id}")>]
   member this.GetSingle(id : int) : IActionResult = 
-    buildingsProvider.GetSingle(BuildingId id) 
-    |> this.BuildResult singleBuilder.Build
-
-  member private this.BuildResult projection result : IActionResult = 
-    match result with 
-    | Some (r) -> this.Ok(r |> projection) :> IActionResult
-    | None -> this.NotFound() :> IActionResult  
+    match buildingsProvider.GetSingle(BuildingId id) with
+    | Ok(building) -> building 
+                      |> singleBuilder.Build 
+                      |> this.Ok :> IActionResult
+    | Error(NotFound) -> this.NotFound() :> IActionResult
+    | Error(FoundDuplicate)
+    | Error(Panic) -> this.StatusCode(500) :> IActionResult

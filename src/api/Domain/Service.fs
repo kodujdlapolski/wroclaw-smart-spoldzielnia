@@ -1,4 +1,5 @@
 module Service
+open Building
 
 type ServiceId = ServiceId of int
 
@@ -8,3 +9,5 @@ type Service =
     Name : string;
     Description : string;
   }
+
+type GetServicesForBuilding = BuildingId -> Service list

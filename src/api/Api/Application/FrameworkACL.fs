@@ -9,5 +9,5 @@ type IBuildingResponseBuilder =
   abstract member Build : Building -> BuildingWebObject
 
 type IBuildingsProvider = 
-  abstract member Get : unit -> Building list
-  abstract member GetSingle : BuildingId -> Building option
+  abstract member Get : unit -> RetrievedBuildings
+  abstract member GetSingle : BuildingId -> RetrievedBuilding

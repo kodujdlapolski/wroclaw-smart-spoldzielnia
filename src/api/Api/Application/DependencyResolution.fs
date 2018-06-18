@@ -10,7 +10,7 @@ open Affordances
 
 let registerServices (kernel: IServiceCollection) = 
   let getBuilding = getBuilding (getBuildingById connectionString)
-  let getBuildings = getBuildings connectionString
+  let getBuildings = getAllBuildings (getBuildings connectionString)
 
   let provider = 
     { new IBuildingsProvider 
