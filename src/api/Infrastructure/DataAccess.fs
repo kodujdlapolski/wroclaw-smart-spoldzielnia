@@ -23,25 +23,42 @@ let getBuildings connectionString () =
     let dataContext = Internal.Db.GetDataContext (connectionString |> value)
     dataContext.Public.Buildings    
     |> Seq.map (
-                fun b -> { 
-                  Id = BuildingId(b.Id); 
-                  Name = b.Name; 
-                  Description = b.Description 
-                  })
+        fun b -> { Id = BuildingId(b.Id); 
+                   Name = b.Name; 
+                   Description = b.Description 
+                 })
     |> Some
   with _ -> None  
 
-let getBuildingById connectionString (BuildingId id) = 
-  try
-    let dataContext = Internal.Db.GetDataContext (connectionString |> value)
-    query {
-      for building in dataContext.Public.Buildings do
-        where (building.Id = id)
-        select building
-    } 
-    |> Seq.map (fun row -> { Id = BuildingId(row.Id);
-                               Name = row.Name; 
+module Buildings = 
+  let getBuildingById connectionString (BuildingId id) = 
+    try
+      let dataContext = Internal.Db.GetDataContext (connectionString |> value)
+      query {
+        for building in dataContext.Public.Buildings do
+          where (building.Id = id)
+          select building
+      } 
+      |> Seq.map (fun row -> { Id = BuildingId(row.Id);
+                                 Name = row.Name; 
+                                 Description = row.Description })
+      |> Some   
+    with _ -> None 
+
+module Services = 
+  open Service
+
+  let getServicesForBuilding connectionString (BuildingId id) = 
+    try
+      let dataContext = Internal.Db.GetDataContext (connectionString |> value)
+      query {
+        for service in dataContext.Public.Services do
+          where (service.Buildingid = id)
+          select service      
+      } 
+      |> Seq.map (fun row -> { Id = ServiceId(row.Id);
+                               Name = row.Name;
                                Description = row.Description })
-    |> Some   
-  with _ -> None 
+      |> Some                           
+    with _ -> None
   

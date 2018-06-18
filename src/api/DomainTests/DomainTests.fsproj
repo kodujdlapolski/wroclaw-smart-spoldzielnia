@@ -7,6 +7,7 @@
 
   <ItemGroup>
     <Compile Include="BuildingTests.fs" />
+    <Compile Include="ServiceTests.fs" />
     <Compile Include="Program.fs" />
   </ItemGroup>
   <ItemGroup>

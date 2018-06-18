@@ -19,16 +19,16 @@ type RetrievedBuildings = Result<Building seq,BuildingError>
 
 type BuildingRepository = unit -> Building seq option
 type SingleBuildingRepository = BuildingId -> Building seq option
-type GetBuilding = SingleBuildingRepository -> BuildingId -> RetrievedBuilding
-type GetAllBuildings = BuildingRepository -> unit -> RetrievedBuildings
+type GetBuilding = BuildingId -> RetrievedBuilding
+type GetAllBuildings = unit -> RetrievedBuildings
 
-let getAllBuildings : GetAllBuildings = 
+let getAllBuildings : (BuildingRepository -> GetAllBuildings) = 
   fun repository () -> 
     match repository() with
     | None -> Error Panic
     | Some(buildings) -> Ok buildings
 
-let getBuilding : GetBuilding = 
+let getBuilding : (SingleBuildingRepository -> GetBuilding) = 
   fun repository id -> 
     match repository id with
     | None -> Error Panic
