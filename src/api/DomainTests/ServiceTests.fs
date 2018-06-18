@@ -7,16 +7,21 @@ open Utils
 let getServicessTests = 
 
   let dummyBuilding : Building = 
-    { Id = BuildingId(1); Name = "building"; Description = "it's a building" }
+    { Id = BuildingId(1); Name = "building"; Description = "it's a buildingz" }
 
   let dummyService = 
-    { Id = ServiceId(1); 
-      BuildingId = BuildingId(2);
+    { Id = 1; 
       Name = "name"; 
       Description = "description" }  
 
   let mockRepository services = 
     fun _ -> Some(services|> Seq.ofList)  
+
+  // let compareServices (Ok(sv1) : RetrievedServices,Ok(sv2) : RetrievedServices) = 
+  //   let s1,s2 = sv1 |> Seq.head, sv2 |> Seq.head
+  //   let {Service.Service.Id = s1Id; Service.Service.Description = s1desc; Service.Service.Name = s1Name; Service.Service.Building = s1b} = s1
+  //   let {Service.Service.Id = s2Id; Service.Service.Description = s2desc; Service.Service.Name = s2Name; Service.Service.Building = s2b} = s2
+  //   s1Id = s2Id && s1desc = s2desc && s1Name = s2Name && s1b = s2b
 
   "Retrieving services collection" =>? 
   [
@@ -25,7 +30,12 @@ let getServicessTests =
       let repo = mockRepository [dummyService]
       let act = getServicesForBuilding buildingDomainService repo
 
-      test <@ act (BuildingId 1) = Ok([dummyService]|> Seq.ofList) @>
+      let expectedService = 
+        { Id = ServiceId(dummyService.Id);
+          Name = dummyService.Name;
+          Description = dummyService.Description;
+          Building = dummyBuilding }
+      test <@ act (BuildingId 1) =  Ok([expectedService]) @>
 
     "When no building found should return BuildingNotFound error" ->? fun _ ->
       let buildingDomainService _ = Error NotFound
