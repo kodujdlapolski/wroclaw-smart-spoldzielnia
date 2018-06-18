@@ -2,26 +2,24 @@
 
 open Microsoft.AspNetCore.Mvc
 open FrameworkACL
-open BuildingsWebObject
 
 type BuildingsController
   (buildingsProvider : IBuildingsProvider, 
-   collectionBuilder : ICollectionBuildingAffordanceBuilder,
-   singleBuilder : ISingleBuildingAffordanceBuilder) =
+   singleBuilder : IBuildingResponseBuilder) =
   inherit Controller()
 
   [<HttpGet>]
   [<Route("buildings")>]
   member this.Get() =
     buildingsProvider.Get() 
-    |> List.map (collectionBuilder.Build this.Request)
+    |> List.map singleBuilder.Build
     |> this.Ok
 
   [<HttpGet>]
   [<Route("buildings/{id}")>]
   member this.GetSingle(id : int) : IActionResult = 
     buildingsProvider.GetSingle(id) 
-    |> this.BuildResult (singleBuilder.Build this.Request)
+    |> this.BuildResult singleBuilder.Build
 
   member private this.BuildResult projection result : IActionResult = 
     match result with 

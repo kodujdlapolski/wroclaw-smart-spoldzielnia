@@ -3,7 +3,7 @@ module BuildingWebObjectBuilderTests
 open Utils
 open Domain
 open BuildingsWebObject
-open System.Net.Http
+open Affordances
 
 [<Tests>]
 let toWebObjectTests = 
@@ -13,10 +13,10 @@ let toWebObjectTests =
       Id = 1
     }
 
-  let dummyUrlProvider _ = ""
-  let dummyRequest = new HttpRequestMessage(HttpMethod.Get, "")
+  let dummyUriBuilder _ = ""
 
-  let act = collectionBuildingAffordances dummyUrlProvider dummyRequest
+  let act = buildWebObject dummyUriBuilder
+
   "Creating Building Web Object" =>? [
     
     "should map Name" ->? fun _ ->
@@ -50,16 +50,17 @@ let toWebObjectTests =
             |> Map.filter (fun k _ -> k = "self") 
             |> Map.count = 1 @>
       
-      "self link should have format /buildingsRelativeUrl/{id}" ->? fun _ ->
+      "self link should base on single building affordance" ->? fun _ ->
         
-        let baseUrlProviderDouble _ = "buildingsRelativeUrl"
-        let act = collectionBuildingAffordances baseUrlProviderDouble dummyRequest
+        let uriBuilderStub = function
+        | Building(BuildingId _) -> "single building uri"
+        | _ -> "other"
+
+        let act = buildWebObject uriBuilderStub
         let building = {dummyBuilding with Id = 42}
         
-        let selfLink = 
-          (act building).Links 
-          |> Map.find "self"
+        let selfLink = (act building).Links |> Map.find "self"
 
-        test <@ selfLink.Href = "/buildingsRelativeUrl/42" @>
+        test <@ selfLink.Href = "single building uri" @>
     ]
   ]

@@ -36,11 +36,11 @@ let buildingsControllerTests =
         member __.GetSingle _ = buildings |> singleton }
 
   let mockWebObjectBuilder webObject = 
-    {new ICollectionBuildingAffordanceBuilder with member __.Build _ _ = webObject } 
+    {new IBuildingResponseBuilder with member __.Build _ = webObject } 
 
   let webObjectBuilderStub = 
-    {new ISingleBuildingAffordanceBuilder 
-      with member __.Build _ b = 
+    {new IBuildingResponseBuilder 
+      with member __.Build b = 
             { Name = b.Name; 
               Description = b.Description;
               Id = string b.Id;
@@ -58,7 +58,7 @@ let buildingsControllerTests =
           dummyBuilding |> List.replicate count |> mockProvider
         let jsonBuilderDouble = mockWebObjectBuilder buildingWebObject
         let controller = 
-          new BuildingsController(providerDouble, jsonBuilderDouble, webObjectBuilderStub)
+          new BuildingsController(providerDouble, jsonBuilderDouble)
         let result = 
           controller.Get().Value :?> BuildingWebObject list
 
@@ -70,7 +70,7 @@ let buildingsControllerTests =
           mockWebObjectBuilder { buildingWebObject 
                                  with Name = "this is building" }
         let controller = 
-          new BuildingsController(providerDouble, jsonBuilderDouble, webObjectBuilderStub)
+          new BuildingsController(providerDouble, jsonBuilderDouble)
         let result = 
           controller.Get().Value :?> BuildingWebObject list
 
@@ -91,7 +91,7 @@ let buildingsControllerTests =
           }
         let jsonBuilderDouble = jsonBuilding |> mockWebObjectBuilder
         let controller =
-          new BuildingsController(providerDouble, jsonBuilderDouble, webObjectBuilderStub)
+          new BuildingsController(providerDouble, jsonBuilderDouble)
 
         let result = controller.GetSingle(0) :?> OkObjectResult
 
@@ -102,7 +102,7 @@ let buildingsControllerTests =
         let providerDouble = mockProvider []
         let dummyJsonBuilder = mockWebObjectBuilder buildingWebObject
         let controller =
-          new BuildingsController(providerDouble, dummyJsonBuilder, webObjectBuilderStub)
+          new BuildingsController(providerDouble, dummyJsonBuilder)
         
         let result = controller.GetSingle(0)
 
@@ -120,7 +120,7 @@ let buildingsControllerTests =
         let providerDouble = mockProvider [retrievedBuilding]    
         let x = mockWebObjectBuilder buildingWebObject    
         let controller = 
-          new BuildingsController(providerDouble, x, webObjectBuilderStub)
+          new BuildingsController(providerDouble, webObjectBuilderStub)
         let result = 
           (controller.GetSingle(0) :?> OkObjectResult).Value 
           :?> BuildingWebObject

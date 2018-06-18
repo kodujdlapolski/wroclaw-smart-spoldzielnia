@@ -4,6 +4,7 @@
     <TargetFramework>netcoreapp2.0</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="AffordancesTests.fs"/>
     <Compile Include="BuildingsControllerTests.fs" />
     <Compile Include="BuildingWebObjectBuilderTests.fs" />
     <Compile Include="Program.fs" />
