@@ -58,5 +58,13 @@ let toWebObjectTests =
              result.Links 
             |> Map.filter (fun k _ -> k = "self") 
             |> Map.count = 1 @>
+
+      "should add issues link" ->? fun _ ->
+        let result = act dummyService
+
+        test <@ 
+             result.Links 
+            |> Map.filter (fun k _ -> k = "issues") 
+            |> Map.count = 1 @>
     ]
   ]

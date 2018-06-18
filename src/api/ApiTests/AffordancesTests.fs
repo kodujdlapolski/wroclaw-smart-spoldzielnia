@@ -30,4 +30,12 @@ let creatingUrisToAffordances =
 
       test <@ buildUri affordance = "/buildings/9/services/2" @>
 
+    "Creates uri for issues in specific service" ->? fun _ ->
+      let affordance = 
+        BuildingServices(
+          BuildingId 7, 
+          ServiceIssues (ServiceId 6, CollectionOfIssues))
+
+      test <@ buildUri affordance = "/buildings/7/services/6/issues" @>    
+
   ]
