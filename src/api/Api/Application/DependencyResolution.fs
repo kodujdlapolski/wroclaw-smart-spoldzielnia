@@ -3,7 +3,8 @@ module DependencyResolution
 open Microsoft.Extensions.DependencyInjection
 open FrameworkACL
 open BuildingsWebObject
-open DataAccess
+open DataAccess.Buildings
+open DataAccess.Services
 open Building
 open ConnectionString
 open Affordances

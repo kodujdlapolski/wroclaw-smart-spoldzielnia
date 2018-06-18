@@ -18,19 +18,20 @@ module private Internal =
       ConnectionString = CompiletimeConnectionString,
       ResolutionPath = ResolutionPath>
 
-let getBuildings connectionString () =
-  try
-    let dataContext = Internal.Db.GetDataContext (connectionString |> value)
-    dataContext.Public.Buildings    
-    |> Seq.map (
-        fun b -> { Id = BuildingId(b.Id); 
-                   Name = b.Name; 
-                   Description = b.Description 
-                 })
-    |> Some
-  with _ -> None  
-
 module Buildings = 
+
+  let getBuildings connectionString () =
+    try
+      let dataContext = Internal.Db.GetDataContext (connectionString |> value)
+      dataContext.Public.Buildings    
+      |> Seq.map (
+          fun b -> { Id = BuildingId(b.Id); 
+                     Name = b.Name; 
+                     Description = b.Description 
+                   })
+      |> Some
+    with _ -> None 
+
   let getBuildingById connectionString (BuildingId id) = 
     try
       let dataContext = Internal.Db.GetDataContext (connectionString |> value)
