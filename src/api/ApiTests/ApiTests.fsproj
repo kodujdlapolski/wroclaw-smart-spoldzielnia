@@ -6,6 +6,7 @@
   <ItemGroup>
     <Compile Include="AffordancesTests.fs"/>
     <Compile Include="BuildingsControllerTests.fs" />
+    <Compile Include="ServicesControllerTests.fs" />
     <Compile Include="BuildingWebObjectBuilderTests.fs" />
     <Compile Include="Program.fs" />
   </ItemGroup>

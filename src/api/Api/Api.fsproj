@@ -10,10 +10,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Application/Affordances.fs" />
+    <Compile Include="Application/WebObjects/Links.fs" />
     <Compile Include="Application/WebObjects/BuildingsWebObject.fs" />
+    <Compile Include="Application/WebObjects/ServiceWebObject.fs" />
     <!--Anything below is framework specific -->
     <Compile Include="Application/FrameworkACL.fs"/>
     <Compile Include="Application/Controllers/BuildingsController.fs" />
+    <Compile Include="Application/Controllers/ServicesController.fs" />
     <Compile Include="Application/DependencyResolution.fs" />
     <Compile Include="Application/Startup.fs" />
     <Compile Include="Application/Program.fs" />

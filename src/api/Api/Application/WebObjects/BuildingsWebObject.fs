@@ -4,11 +4,7 @@ open Newtonsoft.Json
 open Building
 open Affordances
 open Newtonsoft.Json.Serialization
-
-[<JsonObject(NamingStrategyType = typeof<SnakeCaseNamingStrategy>)>]
-type Link = {Href : string; Templated : bool;}
-
-type Links = Map<string,Link>
+open Links
 
 [<JsonObject(NamingStrategyType = typeof<SnakeCaseNamingStrategy>)>]
 type BuildingWebObject = 
