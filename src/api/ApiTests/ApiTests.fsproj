@@ -5,6 +5,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="AffordancesTests.fs"/>
+    <Compile Include="BuildingErrorResponseTests.fs" />
     <Compile Include="BuildingsControllerTests.fs" />
     <Compile Include="ServicesControllerTests.fs" />
     <Compile Include="BuildingWebObjectTests.fs" />

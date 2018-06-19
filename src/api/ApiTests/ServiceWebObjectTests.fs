@@ -4,7 +4,6 @@ open Utils
 open Building
 open Service
 open ServiceWebObject
-open Affordances
 
 [<Tests>]
 let toWebObjectTests = 
