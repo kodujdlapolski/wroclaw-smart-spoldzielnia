@@ -65,7 +65,6 @@ let buildingsControllerTests =
 
   "BuildingsController" =>? 
   [
-    
     "Collection of buildings" =>? [
 
       "Should return all found buildings" ->? fun _ ->
@@ -107,7 +106,6 @@ let buildingsControllerTests =
         
         test <@ result.StatusCode ?= 777 
              && string result.Value = "error message" @>
-
     ]
 
     "Single building" =>? 
@@ -144,45 +142,6 @@ let buildingsControllerTests =
         
         test <@ result.StatusCode ?= 888 
              && string result.Value = "error message" @>
-
-      // "When building is not found should return 404 response" ->? fun _ ->
-        
-      //   let providerDouble = stubProvider []
-      //   let dummyJsonBuilder = stubResponseBuilder buildingWebObject
-      //   let controller =
-      //     new BuildingsController(providerDouble, dummyJsonBuilder)
-        
-      //   let result = controller.GetSingle(0)
-
-      //   test <@ result :? NotFoundResult @>
-
-      // "When two buildings are found should return 500 response" ->? fun _ ->
-      //   let providerDouble = 
-      //     {new IBuildingsProvider with
-      //       member __.GetSingle(_) = Error FoundDuplicate 
-      //       member __.Get() = failwith ""
-      //     }
-      //   let dummyJsonBuilder = stubResponseBuilder buildingWebObject
-      //   let controller =
-      //     new BuildingsController(providerDouble, dummyJsonBuilder)
-        
-      //   let result = controller.GetSingle(0) :?> StatusCodeResult
-
-      //   test <@ result.StatusCode = 500 @>
-
-      // "When provider panics should return 500 response" ->? fun _ ->
-      //   let providerDouble = 
-      //     {new IBuildingsProvider with
-      //       member __.GetSingle(_) = Error Panic 
-      //       member __.Get() = failwith ""
-      //     }
-      //   let dummyJsonBuilder = stubResponseBuilder buildingWebObject
-      //   let controller =
-      //     new BuildingsController(providerDouble, dummyJsonBuilder)
-        
-      //   let result = controller.GetSingle(0) :?> StatusCodeResult
-
-      //   test <@ result.StatusCode = 500 @>
 
       "Should build json representation from retrieved building" =>?
         
