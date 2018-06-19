@@ -37,5 +37,4 @@ let creatingUrisToAffordances =
           ServiceIssues (ServiceId 6, CollectionOfIssues))
 
       test <@ buildUri affordance = "/buildings/7/services/6/issues" @>    
-
   ]

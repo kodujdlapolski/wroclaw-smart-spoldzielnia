@@ -44,13 +44,13 @@ let getServicessTests =
 
       test <@ act (BuildingId 1) = Error Panic @>
 
-    "When found two buildings should return consistency error" ->? fun _ -> 
+    "When found two buildings should return panic error" ->? fun _ -> 
       let buildingDomainService _ = Error FoundDuplicate
       let repo _ = None
       let converter _ _ = Fixture.dummyService
       let act = getServicesForBuilding buildingDomainService converter repo
 
-      test <@ act (BuildingId 1) = Error Consistency @>    
+      test <@ act (BuildingId 1) = Error Panic @>    
   ]
 
 [<Tests>]

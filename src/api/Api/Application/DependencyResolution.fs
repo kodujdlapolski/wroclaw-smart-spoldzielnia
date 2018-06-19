@@ -39,7 +39,7 @@ let registerServices (kernel: IServiceCollection) =
 
   let serviceResponseBuilder = 
     { new IServiceResponseBuilder with
-      member __.Build s = ServiceWebObject.toServiceWebObject buildUri s
+      member __.Build s = ServiceResponse.toServiceWebObject buildUri s
      }  
 
   addToKernel<IBuildingsProvider> kernel buildingsProvider |> ignore

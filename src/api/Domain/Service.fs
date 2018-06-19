@@ -21,7 +21,6 @@ type Service =
 type ServicesError = 
   | ServiceNotFound
   | BuildingNotFound
-  | Consistency
   | Panic
 
 type RetrievedServices = Result<Service list, ServicesError>
@@ -53,4 +52,4 @@ let getServicesForBuilding
               |> List.ofSeq)
       | Error NotFound -> Error BuildingNotFound
       | Error Building.Panic -> Error Panic
-      | Error FoundDuplicate -> Error Consistency
+      | Error FoundDuplicate -> Error Panic

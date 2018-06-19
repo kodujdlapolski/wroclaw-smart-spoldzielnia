@@ -7,7 +7,6 @@ open Api.Controllers
 open FrameworkACL
 open ServiceWebObject
 open Microsoft.AspNetCore.Mvc
-open System
 
 
 let getOkResponseBody<'a> (resp : IActionResult) = 
@@ -26,7 +25,10 @@ let mockServiceProvider result =
 let servicesControllerTests = 
 
   let dummyServiceWebObject = 
-    {Name = "name"; Description = "Description"; Id = "zzz"; Links = [] |> Map.ofList}
+    { Name = "name"; 
+      Description = "Description"; 
+      Id = "zzz"; 
+      Links = [] |> Map.ofList }
 
   let dummyService = 
     { Name = "name"; 
@@ -36,26 +38,18 @@ let servicesControllerTests =
                    Description = "building desc";
                    Id = BuildingId(777)}}
 
-  "Should provide collection of services for building" =>?
+  "Retrieving collection of services for building" =>?
   [
     "Should return all services" ->? fun _ ->
       let count = 10
       let providerDouble = 
-        dummyService 
-        |> List.replicate count 
-        |> Ok 
-        |> mockServiceProvider
+        dummyService |> List.replicate count |> Ok |> mockServiceProvider
       let builder = mockResponseBuilder dummyServiceWebObject
-      let controller = 
-        new ServicesController(providerDouble, builder)
+      let controller = new ServicesController(providerDouble, builder)
 
       let result = 
         controller.Get(0) 
         |> getOkResponseBody<ServiceWebObject list>
 
-      test <@ List.length result = count @>      
-
-
-     
-
+      test <@ List.length result = count @>
   ]
