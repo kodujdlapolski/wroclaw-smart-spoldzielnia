@@ -16,4 +16,3 @@ type ServicesController
       handle 
         (List.map responseBuilder.Success)
         (responseBuilder.CollectionError (BuildingId id))
-      

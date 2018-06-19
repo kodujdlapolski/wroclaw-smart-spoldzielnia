@@ -12,4 +12,3 @@ type BuildingWebObject =
     [<JsonProperty("_links")>]
     Links : Links
   }
-
