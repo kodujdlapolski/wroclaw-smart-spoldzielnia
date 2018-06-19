@@ -100,7 +100,7 @@ let buildingsControllerTests =
         let responseBuilderDouble = 
           stubResponseBuilderWithError 777 "error message"   
         let controller = 
-          new BuildingsController(providerDouble, responseBuilderDouble)               
+          new BuildingsController(providerDouble, responseBuilderDouble)
 
         let result = controller.Get() :?> ObjectResult
         
@@ -136,7 +136,7 @@ let buildingsControllerTests =
         let responseBuilderDouble = 
           stubResponseBuilderWithError 888 "error message"   
         let controller = 
-          new BuildingsController(providerDouble, responseBuilderDouble)               
+          new BuildingsController(providerDouble, responseBuilderDouble)
 
         let result = controller.GetSingle(2) :?> ObjectResult
         
@@ -166,7 +166,7 @@ let buildingsControllerTests =
             test <@ result.Name = retrievedBuilding.Name @>
 
           "Should map Id" ->? fun _ ->
-            test <@ result.Name = retrievedBuilding.Name @>          
+            test <@ result.Name = retrievedBuilding.Name @>
         ]
     ]
   ]

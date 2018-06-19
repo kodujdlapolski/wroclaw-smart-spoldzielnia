@@ -70,8 +70,8 @@ let servicesControllerTests =
         let responseBuilderDouble = 
           stubResponseBuilderWithError 777 "error message"   
         let controller = 
-          new ServicesController(providerDouble, responseBuilderDouble)               
-
+          new ServicesController(providerDouble, responseBuilderDouble)
+          
         let result = controller.Get(0) :?> ObjectResult
         
         test <@ result.StatusCode ?= 777 
