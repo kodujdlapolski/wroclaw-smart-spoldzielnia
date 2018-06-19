@@ -11,8 +11,9 @@ type ServicesController
 
   [<HttpGet>]
   [<Route("buildings/{id}/services")>]
-  member this.Get(id) =
-    match serviceProvider.Get(BuildingId id) with 
-    | Ok(buildings) -> buildings 
-                       |> List.map responseBuilder.Build
-                       |> this.Ok
+  member __.Get(id) =
+    serviceProvider.Get(BuildingId id) |> 
+      handle 
+        (List.map responseBuilder.Success)
+        (responseBuilder.CollectionError (BuildingId id))
+      

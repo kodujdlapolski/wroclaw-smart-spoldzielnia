@@ -14,7 +14,8 @@ type IBuildingResponseBuilder =
   abstract member CollectionError : BuildingError -> int * string
 
 type IServiceResponseBuilder = 
-  abstract member Build : Service -> ServiceWebObject
+  abstract member Success : Service -> ServiceWebObject
+  abstract member CollectionError : BuildingId -> ServicesError -> int * string
 
 type IBuildingServiceProvider = 
   abstract member Get : BuildingId -> RetrievedServices
@@ -33,6 +34,3 @@ let handle
       let code, webObject = makeFailure failure
       new ObjectResult(webObject, StatusCode = new System.Nullable<int>(code))
       :> IActionResult
-
-    
-

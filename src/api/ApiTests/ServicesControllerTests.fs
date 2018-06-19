@@ -7,7 +7,7 @@ open Api.Controllers
 open FrameworkACL
 open ServiceWebObject
 open Microsoft.AspNetCore.Mvc
-
+open Microsoft.FSharp.Linq.NullableOperators
 
 let getOkResponseBody<'a> (resp : IActionResult) = 
   let okResp = resp :?> OkObjectResult
@@ -15,11 +15,17 @@ let getOkResponseBody<'a> (resp : IActionResult) =
 
 let mockResponseBuilder webObject = 
   { new IServiceResponseBuilder with 
-    member __.Build _ = webObject }
+    member __.Success _ = webObject
+    member __.CollectionError _ _ = failwith "" }
 
 let mockServiceProvider result = 
   { new IBuildingServiceProvider with 
     member __.Get _ = result }  
+
+let stubResponseBuilderWithError code msg = 
+  {new IServiceResponseBuilder with 
+   member __.Success _ = failwith ""
+   member __.CollectionError _ _ = code, msg } 
 
 [<Tests>]
 let servicesControllerTests = 
@@ -43,8 +49,12 @@ let servicesControllerTests =
     "Should return all services" ->? fun _ ->
       let count = 10
       let providerDouble = 
-        dummyService |> List.replicate count |> Ok |> mockServiceProvider
-      let builder = mockResponseBuilder dummyServiceWebObject
+        { new IBuildingServiceProvider with 
+          member __.Get _ = dummyService |> List.replicate count |> Ok }
+      let builder = { new IServiceResponseBuilder with 
+                      member __.Success _ = dummyServiceWebObject
+                      member __.CollectionError _ _ = failwith "" }
+
       let controller = new ServicesController(providerDouble, builder)
 
       let result = 
@@ -52,4 +62,18 @@ let servicesControllerTests =
         |> getOkResponseBody<ServiceWebObject list>
 
       test <@ List.length result = count @>
+
+    "When an error occurs should return error response" ->? fun _ ->
+        let providerDouble = 
+          { new IBuildingServiceProvider with 
+            member __.Get _ = Error Panic }
+        let responseBuilderDouble = 
+          stubResponseBuilderWithError 777 "error message"   
+        let controller = 
+          new ServicesController(providerDouble, responseBuilderDouble)               
+
+        let result = controller.Get(0) :?> ObjectResult
+        
+        test <@ result.StatusCode ?= 777 
+             && string result.Value = "error message" @>
   ]
