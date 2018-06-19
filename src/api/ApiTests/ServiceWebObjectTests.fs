@@ -24,7 +24,7 @@ let toWebObjectTests =
 
   let dummyUriBuilder _ = ""
 
-  let act = buildWebObject dummyUriBuilder
+  let act = toServiceWebObject dummyUriBuilder
 
   "Creating Service Web Object" =>? [
     

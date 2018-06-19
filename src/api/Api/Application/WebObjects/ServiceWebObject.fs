@@ -16,7 +16,7 @@ type ServiceWebObject =
     Links : Links
   }
 
-let buildWebObject 
+let toServiceWebObject 
   uriBuilder 
   { Name = name;
     Description = description;

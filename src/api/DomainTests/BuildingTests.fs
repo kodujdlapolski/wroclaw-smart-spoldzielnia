@@ -34,7 +34,6 @@ let getBuildingTests =
       let repo (BuildingId(_)) : Building seq option = None
 
       test <@ getBuilding repo (BuildingId 1) = Error Panic @>
-
   ]
 
 [<Tests>]

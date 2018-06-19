@@ -11,7 +11,8 @@
   <ItemGroup>
     <Compile Include="Application/Affordances.fs" />
     <Compile Include="Application/WebObjects/Links.fs" />
-    <Compile Include="Application/WebObjects/BuildingsWebObject.fs" />
+    <Compile Include="Application/WebObjects/BuildingWebObject.fs" />
+    <Compile Include="Application/WebObjects/BuildingResponse.fs" />
     <Compile Include="Application/WebObjects/ServiceWebObject.fs" />
     <!--Anything below is framework specific -->
     <Compile Include="Application/FrameworkACL.fs"/>

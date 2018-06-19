@@ -29,24 +29,27 @@ type ServicesRepository = BuildingId -> ServiceDto seq option
 
 type GetServicesForBuilding = BuildingId -> RetrievedServices
 
+let mapServices building dto = 
+  {
+    Id = ServiceId(dto.ServiceId);
+    Building = building;
+    Name = dto.ServiceName;
+    Description = dto.ServiceDescription
+  }
+
 let getServicesForBuilding 
-    : (GetBuilding -> ServicesRepository
-      -> GetServicesForBuilding) = 
-    let toService building (dto : ServiceDto) = 
-      {
-        Id = ServiceId(dto.ServiceId);
-        Building = building;
-        Name = dto.ServiceName;
-        Description = dto.ServiceDescription
-      }
-    fun buildingDomainService servicesRepo buildingId -> 
+    : GetBuilding 
+      -> (Building -> ServiceDto -> Service)
+      -> ServicesRepository
+      -> GetServicesForBuilding = 
+    fun buildingDomainService convertToService servicesRepo buildingId -> 
       match buildingDomainService buildingId with
       | Ok(building) -> 
         match servicesRepo buildingId with
         | None -> Error Panic
         | Some serviceDtos -> 
           Ok (serviceDtos 
-              |> Seq.map (toService building) 
+              |> Seq.map (convertToService building) 
               |> List.ofSeq)
       | Error NotFound -> Error BuildingNotFound
       | Error Building.Panic -> Error Panic

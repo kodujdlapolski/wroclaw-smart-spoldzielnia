@@ -13,10 +13,13 @@ let addToKernel<'a when 'a : not struct>
   kernel.AddTransient<'a>(fun _ -> instance)
 
 let registerServices (kernel: IServiceCollection) = 
-  let getBuilding = getBuilding (fetchBuildingById connectionString)
-  let getBuildings = getAllBuildings (fetchBuildings connectionString)
+  let getBuilding = getBuilding (buildingById connectionString)
+  let getBuildings = getAllBuildings (buildings connectionString)
   let getServices = 
-    getServicesForBuilding getBuilding (fetchServicesForBuilding connectionString)
+    getServicesForBuilding 
+      getBuilding 
+      mapServices 
+      (servicesForBuilding connectionString)
 
   let buildingsProvider = 
     { new IBuildingsProvider with 
@@ -29,12 +32,14 @@ let registerServices (kernel: IServiceCollection) =
 
   let buildingResponseBuilder = 
     { new IBuildingResponseBuilder with
-      member __.Build b = BuildingsWebObject.buildWebObject buildUri b
+      member __.Success b = BuildingResponse.toBuildingWebObject buildUri b
+      member __.Error b r = BuildingResponse.toBuildingError b r
+      member __.CollectionError r = BuildingResponse.toBuildingsError r
     }
 
   let serviceResponseBuilder = 
     { new IServiceResponseBuilder with
-      member __.Build s = ServiceWebObject.buildWebObject buildUri s
+      member __.Build s = ServiceWebObject.toServiceWebObject buildUri s
      }  
 
   addToKernel<IBuildingsProvider> kernel buildingsProvider |> ignore

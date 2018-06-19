@@ -2,7 +2,8 @@ module BuildingWebObjectTests
 
 open Utils
 open Building
-open BuildingsWebObject
+open BuildingWebObject
+open BuildingResponse
 open Affordances
 
 [<Tests>]
@@ -15,7 +16,7 @@ let toWebObjectTests =
 
   let dummyUriBuilder _ = ""
 
-  let act = buildWebObject dummyUriBuilder
+  let act = toBuildingWebObject dummyUriBuilder
 
   "Creating Building Web Object" =>? [
     
@@ -42,7 +43,7 @@ let toWebObjectTests =
     
     "should add links" =>? 
     [
-      "should add self link" ->? fun _ ->
+      "self link" ->? fun _ ->
         let result = act dummyBuilding
 
         test <@ 
@@ -56,14 +57,14 @@ let toWebObjectTests =
         | Building(BuildingId _) -> "single building uri"
         | _ -> "other"
 
-        let act = buildWebObject uriBuilderStub
+        let act = toBuildingWebObject uriBuilderStub
         let building = {dummyBuilding with Id = BuildingId(42)}
         
         let selfLink = (act building).Links |> Map.find "self"
 
         test <@ selfLink.Href = "single building uri" @>
 
-      "should add services link" ->? fun _ ->
+      "services link" ->? fun _ ->
         let result = act dummyBuilding
 
         test <@

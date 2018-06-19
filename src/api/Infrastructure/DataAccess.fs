@@ -20,7 +20,7 @@ module private Internal =
 
 module Buildings = 
 
-  let fetchBuildings connectionString () =
+  let buildings connectionString () =
     try
       let dataContext = Internal.Db.GetDataContext (connectionString |> value)
       dataContext.Public.Buildings    
@@ -32,7 +32,7 @@ module Buildings =
       |> Some
     with _ -> None 
 
-  let fetchBuildingById connectionString (BuildingId id) = 
+  let buildingById connectionString (BuildingId id) = 
     try
       let dataContext = Internal.Db.GetDataContext (connectionString |> value)
       query {
@@ -49,7 +49,7 @@ module Buildings =
 module Services = 
   open Service
 
-  let fetchServicesForBuilding connectionString (BuildingId id) = 
+  let servicesForBuilding connectionString (BuildingId id) = 
     try
       let dataContext = Internal.Db.GetDataContext (connectionString |> value)
       query {
