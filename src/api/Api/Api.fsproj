@@ -1,0 +1,30 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
+    <FscToolPath>C:\Program Files (x86)\Microsoft SDKs\F#\4.1\Framework\v4.0</FscToolPath>
+    <FscToolExe>fsc.exe</FscToolExe>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.5" />
+    <PackageReference Include="SqlProvider" Version="1.1.42"/>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Application/Affordances.fs" />
+    <Compile Include="Application/WebObjects/Links.fs" />
+    <Compile Include="Application/WebObjects/BuildingWebObject.fs" />
+    <Compile Include="Application/WebObjects/BuildingResponse.fs" />
+    <Compile Include="Application/WebObjects/ServiceWebObject.fs" />
+    <Compile Include="Application/WebObjects/ServiceResponse.fs" />
+    <!--Anything below is framework specific -->
+    <Compile Include="Application/FrameworkACL.fs"/>
+    <Compile Include="Application/Controllers/BuildingsController.fs" />
+    <Compile Include="Application/Controllers/ServicesController.fs" />
+    <Compile Include="Application/DependencyResolution.fs" />
+    <Compile Include="Application/Startup.fs" />
+    <Compile Include="Application/Program.fs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Domain\Domain.fsproj" />
+    <ProjectReference Include="..\Infrastructure\Infrastructure.fsproj" />
+  </ItemGroup>
+</Project>

@@ -1,0 +1,26 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="AffordancesTests.fs"/>
+    <Compile Include="BuildingErrorResponseTests.fs" />
+    <Compile Include="ServiceErrorResponseTests.fs" />
+    <Compile Include="BuildingsControllerTests.fs" />
+    <Compile Include="ServicesControllerTests.fs" />
+    <Compile Include="BuildingWebObjectTests.fs" />
+    <Compile Include="ServiceWebObjectTests.fs" />
+    <Compile Include="Program.fs" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Expecto" Version="5.*" />
+    <PackageReference Include="FParsec" Version="1.0.3" />
+    <PackageReference Include="Unquote" Version="4.0.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Api\Api.fsproj" />
+    <ProjectReference Include="..\Domain\Domain.fsproj" />
+    <ProjectReference Include="..\TestTools\TestTools.fsproj" />
+  </ItemGroup>
+</Project>
